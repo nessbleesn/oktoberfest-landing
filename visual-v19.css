@@ -4,7 +4,6 @@
 .hero-visual picture { display: block; height: 100%; }
 .hero-subtitle .hero-place { color: var(--orange); font-style: normal; font-weight: 700; }
 .hero-autumn::before,
-.autumn-canopy,
 .experience-autumn::before,
 .closing::before {
   background-image: image-set(
@@ -30,8 +29,7 @@
 
 @media (max-width: 700px) {
   .hero-subtitle .hero-place { color: var(--poster-gold); }
-  .hero-autumn::before,
-  .autumn-canopy { background-image: none; }
+  .hero-autumn::before { background-image: none; }
   .scroll-progress { height: 2px; }
 }
 

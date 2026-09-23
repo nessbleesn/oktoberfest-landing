@@ -9,7 +9,6 @@
 body { background: var(--poster-cream); }
 .hero-autumn { background: var(--poster-cream); }
 .hero-autumn::before { opacity: .1; }
-.autumn-canopy { opacity: .09; }
 .hero-visual img { border-radius: 5px; }
 .hero h1 { white-space: nowrap; }
 .experience-autumn::before { opacity: .13; }
@@ -91,7 +90,6 @@ body { background: var(--poster-cream); }
 
   .hero-autumn { background: var(--poster-forest); color: var(--poster-cream); }
   .hero-autumn::before { opacity: .06; }
-  .autumn-canopy { display: none; }
   .hero {
     gap: 0;
     padding-top: 0;
