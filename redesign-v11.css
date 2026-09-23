@@ -66,6 +66,7 @@ body { background: var(--poster-cream); }
   background: var(--poster-blue);
   color: var(--poster-cream);
 }
+.family-title-line { display: block; }
 .family h3 em { color: var(--poster-gold); }
 .family .subtle { color: #e5f0f2; }
 
@@ -217,7 +218,8 @@ body { background: var(--poster-cream); }
     border: 0;
     border-radius: 0;
   }
-  .family h3 { font-size: 37px; }
+  .family h3 { font-size: clamp(30px, 8.7vw, 35px); line-height: .98; }
+  .family-title-line { white-space: nowrap; }
   .family p:not(.eyebrow) { font-size: 15px; line-height: 1.55; }
 
   .practical { background: var(--bavaria-ice); }

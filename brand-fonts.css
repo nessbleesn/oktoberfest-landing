@@ -7,7 +7,7 @@
 body,button{font-family:var(--font-body)}
 h1,h2,.day-intro h3,.family h3,.closing h2,.reasons h3,.day-tabs strong,.dish-note h3,.activity-grid h3,.practical-items h3,.hero-meta strong,.address{font-family:var(--font-display);font-style:normal;font-weight:700;letter-spacing:.005em}
 h1,h2,.day-intro h3,.family h3,.closing h2{line-height:.96}
-h1 em,h2 em,.day-intro h3 em,.family h3 em,.closing h2 em{font-style:normal}
+h1 em,h2 em,.day-intro h3 em,.family h3 em,.closing h2 em{font-family:inherit;font-size:inherit;font-style:normal;font-weight:inherit;line-height:inherit;letter-spacing:inherit}
 .hero-subtitle{font-family:var(--font-body);font-weight:400;letter-spacing:-.045em;line-height:1.08}
 .hero h1{font-size:clamp(68px,7vw,108px);letter-spacing:.01em;line-height:.88}
 .hero-meta strong{letter-spacing:0;font-size:39px}

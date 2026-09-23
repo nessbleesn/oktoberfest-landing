@@ -131,8 +131,16 @@ summary {
   }
 
   .coupon-float {
-    width: 72px;
-    height: 72px;
+    left: max(14px, env(safe-area-inset-left, 0px));
+    bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 10px));
+    width: 96px;
+    height: 96px;
+    filter: drop-shadow(0 8px 16px rgba(10, 39, 31, .28));
+  }
+
+  .family > div:last-child {
+    min-height: 104px;
+    padding-left: clamp(96px, 28vw, 112px);
   }
 
   .discount-dialog {
@@ -142,8 +150,8 @@ summary {
 
 @media (max-width: 359px) {
   .coupon-float {
-    width: 66px;
-    height: 66px;
+    width: 88px;
+    height: 88px;
   }
 }
 
