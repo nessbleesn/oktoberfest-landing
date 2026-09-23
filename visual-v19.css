@@ -1,0 +1,40 @@
+/* Lightweight responsive media and scroll progress enhancements. */
+:root { --page-progress: 0; }
+
+.hero-visual picture { display: block; height: 100%; }
+.hero-subtitle .hero-place { color: var(--orange); font-style: normal; font-weight: 700; }
+.hero-autumn::before,
+.autumn-canopy,
+.experience-autumn::before,
+.closing::before {
+  background-image: image-set(
+    url("assets/autumn-botanical-v2-1400.avif") type("image/avif"),
+    url("assets/autumn-botanical-v2.webp") type("image/webp")
+  );
+}
+
+.scroll-progress {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  z-index: 2;
+  height: 3px;
+  background: var(--bavaria-blue);
+  transform: scaleX(var(--page-progress));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.site-header.is-scrolled .scroll-progress { background: var(--poster-gold); }
+
+@media (max-width: 700px) {
+  .hero-subtitle .hero-place { color: var(--poster-gold); }
+  .hero-autumn::before,
+  .autumn-canopy { background-image: none; }
+  .scroll-progress { height: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { will-change: auto; }
+}

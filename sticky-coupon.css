@@ -1,0 +1,66 @@
+/* One sticky navigation layer and one compact coupon shortcut. */
+:root { --sticky-header-h: 104px; }
+html { scroll-padding-top: calc(var(--sticky-header-h) + 16px); }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  width: 100%;
+  background: var(--poster-cream);
+  color: var(--poster-forest);
+  border-bottom: 1px solid transparent;
+  transition: background-color .24s ease, color .24s ease, border-color .24s ease, box-shadow .24s ease;
+}
+.site-header .header { width: 100%; }
+.site-header.is-scrolled {
+  background: var(--poster-forest);
+  color: var(--poster-cream);
+  border-bottom-color: #efbf6259;
+  box-shadow: 0 8px 28px #0b241d2b;
+}
+.site-header.is-scrolled .brand img { filter: brightness(0) invert(1); }
+.site-header.is-scrolled .header-contact { border-bottom-color: var(--poster-gold); }
+
+.coupon-float {
+  position: fixed;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: 35;
+  display: block;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+}
+.coupon-float img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.coupon-float:hover { transform: translateY(-4px) scale(1.04); }
+.coupon-float:focus-visible { outline: 3px solid var(--poster-gold); outline-offset: 4px; }
+.coupon-enhanced .coupon-float:not(.is-visible),
+.discount-open .coupon-float {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+@media (max-width: 700px) {
+  :root { --sticky-header-h: 67px; }
+  .coupon-float {
+    left: max(12px, env(safe-area-inset-left));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .coupon-float { transition: none; }
+}

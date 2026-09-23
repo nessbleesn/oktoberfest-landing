@@ -1,0 +1,63 @@
+/* Autumn art direction + compatibility refinements, layered over the v1 layout. */
+:root{--orange:#b04a24;--ease-out:cubic-bezier(.16,1,.3,1)}
+.bavarian-mark{display:inline-block;width:25px;height:25px;margin-right:10px;vertical-align:middle;border:1px solid #1c66805a;border-radius:2px;background-color:#fff9;background-image:repeating-conic-gradient(from 30deg,#267b9a 0% 25%,#faf7ef 0% 50%);background-size:13px 19px}
+.festival-ribbon{border-top:5px solid transparent;border-image:repeating-linear-gradient(120deg,#267b9a 0 12px,#faf7ef 12px 24px) 5}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-wrap:break-word}
+.reasons>*,.activity-grid>*,.family>*,.practical-grid>*,.faq>*,.day-panel>*,.program-heading>*,.hero-meta>*{min-width:0}
+h1,h2,h3,h4,p,.hero-meta span{overflow-wrap:anywhere}
+.tiny-sun,.festival-ribbon i{display:inline-block;position:relative;width:20px;height:20px;flex-shrink:0;font-size:0!important;background:linear-gradient(to right,transparent 46%,var(--orange) 46%,var(--orange) 54%,transparent 54%),linear-gradient(to bottom,transparent 46%,var(--orange) 46%,var(--orange) 54%,transparent 54%)}
+.tiny-sun:before,.festival-ribbon i:before{content:'';position:absolute;inset:0;background:inherit;transform:rotate(45deg)}
+.hero-autumn{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 15% 35%,#f9e4b6aa,transparent 68%),var(--cream)}
+.hero-autumn:before{content:'';position:absolute;inset:0;z-index:-2;background-image:url('assets/autumn-botanical-v2.webp');background-size:cover;background-position:center;opacity:.4;pointer-events:none}
+.autumn-canopy{position:absolute;top:0;left:0;width:58%;height:100%;background:url('assets/autumn-botanical-v2.webp') center/cover no-repeat;opacity:.42;pointer-events:none;z-index:-1;transform-origin:80% 10%}
+.hero-copy{position:relative;min-width:0}.hero-visual{position:relative;min-width:0}
+.hero-visual img{box-shadow:0 18px 55px #183d3220;border:1px solid #ffffff66}
+.hero h1{font-size:clamp(58px,6.5vw,100px);color:#173d31;text-shadow:0 2px 0 #fff6}.hero-lead{color:#394f43;max-width:440px}
+.hero-meta{padding:15px 0;border-top:1px solid #c7ba9866;max-width:375px}.date-seal{outline:1px solid #183d3240;outline-offset:-9px}
+.button{box-shadow:0 7px 18px #183d3215;transition:background .2s,transform .2s,box-shadow .2s}.button:hover{box-shadow:0 10px 22px #183d322a}.button:active{transform:translateY(0)}
+.hero .button{background:var(--orange)}.hero .button:hover{background:var(--ink)}
+.experience-autumn{position:relative;isolation:isolate;overflow:hidden}
+.experience-autumn:before{content:'';position:absolute;inset:0 0 auto;height:540px;background:url('assets/autumn-botanical-v2.webp') right top / max(1300px,100vw) auto no-repeat;opacity:.29;pointer-events:none;z-index:-1;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 28%,transparent 95%);mask-image:linear-gradient(to bottom,#000 0%,#000 28%,transparent 95%)}
+.experience{position:relative;isolation:isolate}.experience:before{content:none}
+.reasons article{transition:transform .35s var(--ease-out)}
+.program{position:relative;isolation:isolate;background:radial-gradient(ellipse at 100% 0%,#385444,transparent 52%),var(--ink)}
+.day-tabs{border:1px solid #617461;border-radius:7px;overflow:hidden}.day-tabs a{transition:background .22s,color .22s}.day-tabs a[aria-current='date']{box-shadow:inset 0 -4px 0 #b64f284d}
+.timeline article{position:relative}.timeline h4{font-weight:700}.timeline p{line-height:1.65}.timeline .highlight{background:#f3c76b0c;border-left:2px solid var(--gold);padding-left:17px;margin-left:-19px}
+.activity-grid article{border:1px solid #183d3210;border-radius:8px;box-shadow:0 4px 12px #183d3206;transition:transform .4s var(--ease-out),box-shadow .4s}.activity-grid small{padding-top:15px;border-top:1px solid #183d3220}
+.family{border-bottom:1px solid var(--line);padding-bottom:35px}
+.closing{position:relative;isolation:isolate;background:radial-gradient(ellipse at center,#f8e6be88,transparent 75%)}.closing:before{content:'';position:absolute;inset:0;z-index:-1;background:url('assets/autumn-botanical-v2.webp') center/cover no-repeat;opacity:.3;pointer-events:none}
+.brand,.header-contact,.header nav a,.practical-items a{min-height:44px}.brand{align-items:center}
+.reveal-item{transition:opacity 1.05s cubic-bezier(.22,.61,.36,1),transform 1.05s cubic-bezier(.22,.61,.36,1);transition-delay:var(--reveal-delay,0ms)}.motion-ready .reveal-pending{opacity:0;transform:translateY(56px)}.reveal-pending:focus-within{opacity:1!important;transform:none!important}
+.motion-ready .hero-copy>.eyebrow{animation:arrive .8s var(--ease-out) both}.motion-ready .hero h1{animation:arrive 1s .08s var(--ease-out) both}.motion-ready .hero-subtitle{animation:arrive 1s .16s var(--ease-out) both}.motion-ready .hero-lead,.motion-ready .hero .button,.motion-ready .hero-meta{animation:arrive .9s .24s var(--ease-out) both}.motion-ready .hero-visual{animation:photo-arrive 1.15s .12s var(--ease-out) both}.motion-ready .autumn-canopy{animation:autumn-breeze 15s ease-in-out infinite alternate}.page-hidden .autumn-canopy{animation-play-state:paused!important}
+@keyframes arrive{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes photo-arrive{from{opacity:0;transform:translateY(25px) scale(.97)}to{opacity:1;transform:none}}@keyframes autumn-breeze{from{transform:translate(-7px,-5px) rotate(-2deg)}to{transform:translate(8px,10px) rotate(2deg)}}
+.hero-offscreen .autumn-canopy{animation-play-state:paused!important}
+.hero-autumn:before{opacity:.16}.autumn-canopy{width:100%;opacity:.26}
+.autumn-air{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;display:none}
+.motion-ready .autumn-air{display:block}
+.leaf-definitions{position:absolute;width:0;height:0}
+.autumn-leaf{position:absolute;top:-75px;width:36px;height:44px;color:#c47432;opacity:0;animation:leaf-fall var(--fall-duration,10s) var(--fall-delay,0s) linear infinite;--fall-distance:1050px;--leaf-sway:55px}
+.leaf-1{left:4%;width:32px;--fall-duration:10s;--fall-delay:-3s;color:#c38833}
+.leaf-2{left:47%;width:42px;--fall-duration:12s;--fall-delay:-7s;--leaf-sway:-45px;color:#af542a}
+.leaf-3{left:88%;width:28px;--fall-duration:9s;--fall-delay:-1s;color:#d29834}
+.leaf-4{left:68%;width:24px;--fall-duration:13s;--fall-delay:-10s;--leaf-sway:-65px;color:#b86832}
+.leaf-5{left:25%;width:21px;--fall-duration:11s;--fall-delay:-6s;color:#d6a44e}
+@keyframes leaf-fall{0%{opacity:0;transform:translate3d(0,0,0) rotate(-25deg)}10%{opacity:.55}45%{transform:translate3d(var(--leaf-sway),calc(var(--fall-distance)*.45),0) rotate(90deg)}80%{opacity:.45}100%{opacity:0;transform:translate3d(0,var(--fall-distance),0) rotate(220deg)}}
+.page-hidden .autumn-leaf,.hero-offscreen .autumn-leaf{animation-play-state:paused!important}
+@media(hover:hover) and (pointer:fine){.reasons article:hover{transform:translateY(-5px)}.activity-grid article:hover{transform:translateY(-7px);box-shadow:0 12px 22px #183d3215}.day-tabs a:hover:not([aria-current]){background:#ffffff0a}}
+@media(min-width:1600px){.hero h1{font-size:100px}.hero-autumn:before{background-size:1536px auto;background-repeat:no-repeat}.hero{padding-bottom:65px}}
+@media(max-width:1050px) and (min-width:701px){.hero h1{font-size:clamp(44px,6.5vw,68px)}.hero-subtitle{font-size:38px}.hero{gap:28px}.hero-visual{height:590px}.header{gap:20px}.header nav{gap:14px}.header nav a{font-size:11px}.header-contact{font-size:11px}.food-copy,.day-intro,.timeline,.faq-list,.practical-items{min-width:0}}
+@media(max-width:700px){
+  .food-photo img{object-position:68% center}
+  .reasons h3 br,.day-intro h3 br,.activity-grid h3 br{display:initial}
+  .hero-autumn:before{background-size:auto 660px;background-position:60% 0;background-repeat:no-repeat;opacity:.2}.autumn-canopy{width:100%;height:590px;background-position:50% 0;opacity:.2}
+  .hero{padding-top:15px;gap:27px}.hero h1{font-size:clamp(48px,13vw,78px);margin-bottom:20px}.hero-subtitle{font-size:40px;margin-bottom:16px}.hero-lead{font-size:14px;line-height:1.65;margin-bottom:20px}.hero .eyebrow{margin-bottom:21px}.hero .button{min-width:0;width:100%;font-size:14px;min-height:56px}
+  .hero-meta{margin-top:19px;padding:13px 0;font-size:12px}.hero-meta strong{font-size:31px}.hero-visual{height:390px}.hero-visual figcaption{left:14px;right:14px;max-width:calc(100% - 28px);font-size:9px;width:auto;line-height:1.45}.date-seal{width:103px;height:103px;top:18px}.date-seal b{font-size:12px}
+  .experience-autumn:before{height:390px;background-size:900px auto;opacity:.17;-webkit-mask-image:linear-gradient(to bottom,#000,transparent 85%);mask-image:linear-gradient(to bottom,#000,transparent 85%)}.side-note,.reasons p,.food-copy>p:not(.eyebrow),.family p:not(.eyebrow),.practical p{font-size:14px}
+  .hero{padding-bottom:70px}.autumn-leaf{--fall-distance:1350px;width:25px}.leaf-2{left:88%}.leaf-4,.leaf-5{display:none}
+  .day-tabs a{padding:18px 7px}.day-tabs strong{font-size:12px}.day-tabs span{font-size:9px}.timeline article{grid-template-columns:90px minmax(0,1fr)}.timeline time{font-size:11px}.timeline p{font-size:13px}.timeline span{font-size:9px}.schedule-note{font-size:12px!important}.program-footnote{font-size:12px}.day-intro>p:not(.eyebrow){font-size:14px}
+  .activity-grid p{font-size:14px}.activity-grid small{font-size:11px}.subtle{font-size:12px!important}.faq summary{font-size:14px}.faq details p{font-size:14px;margin-right:10px}.closing:before{background-size:auto 100%;opacity:.23}
+  .preview-note{padding-left:max(17px,env(safe-area-inset-left));padding-right:max(17px,env(safe-area-inset-right))}
+}
+@media(max-width:359px){.brand img{width:126px}.header{gap:10px}.hero h1{font-size:clamp(44px,13vw,47px)}.hero-subtitle{font-size:35px}.day-tabs strong{font-size:10px}.day-tabs span{font-size:8px}.timeline article{grid-template-columns:78px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.reveal-item,.reveal-pending{opacity:1!important;transform:none!important;transition:none!important}.autumn-canopy,.autumn-leaf{animation:none!important}.autumn-air{display:none!important}.motion-ready .hero-copy>*,.motion-ready .hero-visual{animation:none!important;opacity:1!important;transform:none!important}}

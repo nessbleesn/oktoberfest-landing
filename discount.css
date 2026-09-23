@@ -1,0 +1,45 @@
+.discount-teaser{margin:11px 0 0;color:#59685e;font-size:12px;line-height:1.45}
+.discount-trigger{border:1px solid #efbf62;background:#b84c26;box-shadow:0 0 0 3px #efbf6229,0 9px 24px #6d2d1724;cursor:pointer;text-align:left}
+.discount-trigger:hover,.discount-trigger:focus-visible{background:#a84422;box-shadow:0 0 0 5px #efbf6238,0 12px 30px #6d2d1730}
+.discount-dialog:not([open]){display:none}
+.discount-dialog{width:min(660px,calc(100% - 28px));max-width:none;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);margin:auto;padding:0;border:1px solid #d5ddda;border-radius:20px;background:#fffdf8;color:#183d32;box-shadow:0 26px 90px #071c18a3;overflow-y:auto;overscroll-behavior:contain}
+.discount-dialog::backdrop{background:#10271fd1;-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.discount-card{position:relative;padding:39px clamp(22px,5vw,48px) 34px;border-top:7px solid #efbf62;background:radial-gradient(circle at 100% 0%,#faedd1 0,transparent 34%),#fffdf8}
+.discount-card .eyebrow{margin:0 48px 12px 0;color:#a34c2b}
+.discount-card h2{font-size:clamp(42px,6vw,64px);line-height:.92;margin:0 48px 11px 0;letter-spacing:.01em}
+.discount-card h2 em{color:#b04a24}
+.discount-intro{font-size:17px;line-height:1.45;color:#44594f;margin:0 0 16px}
+.discount-preview-note{padding:10px 12px;margin:0 0 18px;border-left:3px solid #b04a24;background:#f9eacc;color:#495b51;font-size:12px;line-height:1.45}
+.discount-close{position:absolute;top:18px;right:20px;display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid #c4d0c7;border-radius:50%;background:#fffdf8;color:#183d32;font:32px/1 var(--font-body);cursor:pointer}
+.discount-close:hover{background:#eef2e8}
+.discount-field{margin:0 0 15px}
+.discount-field label{display:block;margin:0 0 7px;font-size:15px;font-weight:700;line-height:1.35}
+.field-optional{font-size:12px;font-weight:400;color:#607167}
+.required-mark{color:#b04a24}
+.discount-field input{display:block;width:100%;min-height:52px;padding:12px 15px;border:1px solid #b7c5be;border-radius:9px;background:white;color:#183d32;font:16px/1.4 var(--font-body);box-shadow:inset 0 1px 2px #183d3209}
+.discount-field input::placeholder{color:#7b8983;opacity:1}
+.discount-field small{display:block;margin:6px 0 0;color:#586d62;font-size:12px;line-height:1.35}
+.discount-consent{display:grid;grid-template-columns:22px minmax(0,1fr);gap:12px;align-items:start;min-height:44px;margin:15px 0 0;font-size:14px;font-weight:700;line-height:1.45;cursor:pointer}
+.discount-consent input{width:22px;height:22px;margin:1px 0 0;accent-color:#267b9a;cursor:pointer}
+.discount-consent small{display:block;margin-top:3px;color:#59685e;font-size:12px;font-weight:400;line-height:1.5}
+.discount-consent a{color:#176b8b;text-decoration:underline;text-underline-offset:2px}
+.discount-submit{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:56px;margin-top:22px;padding:13px 18px;border:0;border-radius:6px;background:#b04a24;color:#fff;font:700 15px/1.3 var(--font-body);cursor:pointer;text-align:left}
+.discount-submit:hover{background:#183d32}
+.discount-submit:disabled{opacity:.6;cursor:not-allowed}
+.discount-submit span{font-size:21px;font-weight:400}
+.discount-status{min-height:0;margin:11px 0 0;color:#a34c2b;font-size:13px;font-weight:700;line-height:1.45}
+.discount-status:empty{display:none}
+.discount-terms{margin:15px 0 0;color:#59685e;font-size:11px;line-height:1.5}
+.discount-dialog :is(button,input,a):focus-visible{outline:3px solid #267b9a;outline-offset:3px}
+html.discount-open,html.discount-open body{overflow:hidden}
+@media(max-width:700px){.discount-dialog{width:calc(100% - 20px);max-height:calc(100vh - 20px);max-height:calc(100dvh - 20px);border-radius:14px}.discount-card{padding:27px 20px 26px}.discount-card h2{font-size:48px}.discount-intro{font-size:15px}.discount-field label{font-size:14px}.discount-consent{font-size:13px}.discount-close{top:11px;right:12px}.hero .discount-trigger{width:100%;line-height:1.3}}
+@media(max-width:359px){.discount-card{padding-left:15px;padding-right:15px}.discount-card h2{font-size:43px}.discount-dialog{width:calc(100% - 12px)}}
+@media(prefers-reduced-motion:no-preference){
+  .discount-dialog[open]{animation:discount-glow 1.5s ease-out 1 both}
+  @keyframes discount-glow{
+    0%{opacity:.96;box-shadow:0 26px 90px #071c18a3,0 0 0 0 #efbf6200}
+    45%{opacity:1;box-shadow:0 26px 90px #071c18a3,0 0 0 7px #efbf623d,0 0 44px #efbf6252}
+    100%{opacity:1;box-shadow:0 26px 90px #071c18a3,0 0 0 2px #efbf621f}
+  }
+}
+@media(prefers-reduced-motion:reduce){.discount-dialog[open]{animation:none!important}}

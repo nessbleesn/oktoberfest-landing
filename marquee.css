@@ -1,0 +1,68 @@
+.festival-ribbon {
+  display: block;
+  min-height: 66px;
+  padding: 20px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.festival-ribbon::before { display: none; }
+
+.festival-ribbon-track {
+  display: flex;
+  width: max-content;
+  transform: translate3d(0, 0, 0);
+  animation: festival-marquee 26s linear infinite;
+  will-change: transform;
+}
+
+.festival-ribbon-group {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: clamp(23px, 3vw, 40px);
+  padding-right: clamp(23px, 3vw, 40px);
+}
+
+@keyframes festival-marquee {
+  to { transform: translate3d(-33.333333%, 0, 0); }
+}
+
+.page-hidden .festival-ribbon-track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 700px) {
+  .festival-ribbon {
+    min-height: 52px;
+    padding: 14px 0;
+  }
+
+  .festival-ribbon-track { animation-duration: 21s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .festival-ribbon {
+    padding: 14px 20px;
+    white-space: normal;
+  }
+
+  .festival-ribbon-track {
+    display: block;
+    width: auto;
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .festival-ribbon-group {
+    width: 100%;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+    padding: 0;
+  }
+
+  .festival-ribbon-group[aria-hidden="true"] { display: none; }
+}

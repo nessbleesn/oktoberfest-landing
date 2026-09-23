@@ -1,0 +1,163 @@
+/* Responsive and Safari-safe finishing pass for the approval preview. */
+:root {
+  --safe-inline-start: max(var(--gutter), env(safe-area-inset-left, 0px));
+  --safe-inline-end: max(var(--gutter), env(safe-area-inset-right, 0px));
+  --sticky-header-h: calc(104px + env(safe-area-inset-top, 0px));
+}
+
+html {
+  scroll-padding-top: calc(var(--sticky-header-h) + 16px);
+}
+
+body {
+  overflow-wrap: break-word;
+}
+
+.wrap {
+  padding-left: var(--safe-inline-start);
+  padding-right: var(--safe-inline-end);
+}
+
+:where(section[id], h1[id], h2[id], h3[id]) {
+  scroll-margin-top: calc(var(--sticky-header-h) + 16px);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
+}
+
+p,
+.hero-meta span,
+summary {
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-wrap: pretty;
+}
+
+:where(a, button, summary, label) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(a, button, input, summary):focus-visible {
+  scroll-margin-block: calc(var(--sticky-header-h) + 16px) 24px;
+}
+
+.site-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.skip {
+  left: max(20px, env(safe-area-inset-left, 0px));
+}
+
+.skip:focus {
+  top: max(20px, env(safe-area-inset-top, 0px));
+}
+
+.footer {
+  padding-bottom: max(25px, env(safe-area-inset-bottom, 0px));
+}
+
+.discount-dialog {
+  max-width: calc(100% - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px) - 20px);
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 20px);
+}
+
+.reasons p,
+.food-copy > p:not(.eyebrow),
+.dish-note p,
+.activity-grid p,
+.family p:not(.eyebrow),
+.practical p,
+.faq details p {
+  font-size: 15px;
+}
+
+.faq summary {
+  font-size: 16px;
+}
+
+.program-heading p,
+.day-intro > p:not(.eyebrow),
+.timeline p {
+  font-size: 14px;
+}
+
+@media (min-width: 1800px) {
+  .reasons p,
+  .food-copy > p:not(.eyebrow),
+  .dish-note p,
+  .family p:not(.eyebrow),
+  .practical p,
+  .activity-grid p,
+  .faq details p {
+    font-size: 17px;
+  }
+
+  .program-heading p,
+  .day-intro > p:not(.eyebrow),
+  .timeline p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --sticky-header-h: calc(67px + env(safe-area-inset-top, 0px));
+  }
+
+  .hero-visual,
+  .food-photo {
+    width: calc(100% + var(--safe-inline-start) + var(--safe-inline-end));
+    margin-left: calc(0px - var(--safe-inline-start));
+  }
+
+  .date-seal {
+    right: max(18px, env(safe-area-inset-right, 0px));
+  }
+
+  .family {
+    margin-left: calc(0px - var(--safe-inline-start));
+    margin-right: calc(0px - var(--safe-inline-end));
+    padding-left: var(--safe-inline-start);
+    padding-right: var(--safe-inline-end);
+  }
+
+  .coupon-float {
+    width: 72px;
+    height: 72px;
+  }
+
+  .discount-dialog {
+    width: calc(100% - 20px);
+  }
+}
+
+@media (max-width: 359px) {
+  .coupon-float {
+    width: 66px;
+    height: 66px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .site-header .header {
+    min-height: 58px;
+  }
+
+  :root {
+    --sticky-header-h: calc(58px + env(safe-area-inset-top, 0px));
+  }
+
+  .coupon-float {
+    width: 64px;
+    height: 64px;
+  }
+}

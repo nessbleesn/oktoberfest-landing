@@ -1,0 +1,17 @@
+/* Park Skazka brand kit: PT Root UI for reading, Bebas Neue for display.
+   Entrofly is deliberately excluded: the supplied desktop EULA requires a separate web license. */
+@font-face{font-family:"PT Root UI";src:url("assets/fonts/pt-root-ui_regular.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"PT Root UI";src:url("assets/fonts/pt-root-ui_bold.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"Bebas Neue";src:url("assets/fonts/BebasNeue-Bold.otf") format("opentype");font-style:normal;font-weight:700;font-display:swap}
+:root{--font-body:"PT Root UI",Arial,sans-serif;--font-display:"Bebas Neue","Arial Narrow",Arial,sans-serif}
+body,button{font-family:var(--font-body)}
+h1,h2,.day-intro h3,.family h3,.closing h2,.reasons h3,.day-tabs strong,.dish-note h3,.activity-grid h3,.practical-items h3,.hero-meta strong,.address{font-family:var(--font-display);font-style:normal;font-weight:700;letter-spacing:.005em}
+h1,h2,.day-intro h3,.family h3,.closing h2{line-height:.96}
+h1 em,h2 em,.day-intro h3 em,.family h3 em,.closing h2 em{font-style:normal}
+.hero-subtitle{font-family:var(--font-body);font-weight:400;letter-spacing:-.045em;line-height:1.08}
+.hero h1{font-size:clamp(68px,7vw,108px);letter-spacing:.01em;line-height:.88}
+.hero-meta strong{letter-spacing:0;font-size:39px}
+.reasons h3,.day-tabs strong,.dish-note h3,.activity-grid h3,.practical-items h3{line-height:1.02}
+@media(max-width:1050px) and (min-width:701px){.hero h1{font-size:clamp(58px,6.8vw,78px)}}
+@media(max-width:700px){.hero h1{font-size:clamp(62px,16vw,82px)}.hero-subtitle{font-size:clamp(32px,8vw,39px)}.hero-meta strong{font-size:34px}}
+@media(max-width:359px){.hero h1{font-size:clamp(54px,15.7vw,59px)}}

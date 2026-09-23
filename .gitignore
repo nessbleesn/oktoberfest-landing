@@ -1,0 +1,20 @@
+# Local QA evidence and generated screenshots are not part of the public site.
+qa/
+
+# Internal content registry and image-generation working materials.
+FACTS.md
+event.json
+assets/PROMPTS.md
+assets/references/
+
+# Superseded or unapproved visual candidates.
+assets/coupon-badge-candidate-*.png
+assets/atmosphere-v19-*.avif
+assets/atmosphere-v19-*.webp
+assets/hero.webp
+assets/hero-v4.webp
+assets/food.webp
+
+# Local system files.
+.DS_Store
+Thumbs.db
