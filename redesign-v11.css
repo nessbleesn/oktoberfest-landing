@@ -80,7 +80,6 @@ body { background: var(--poster-cream); }
 .closing::before { opacity: .09; }
 .closing h2 em { color: var(--poster-gold); }
 .closing .button { background: var(--orange); color: #fff; }
-.closing .text-link { color: var(--poster-cream); }
 
 @media (max-width: 700px) {
   :root { --gutter: 20px; }
@@ -226,7 +225,10 @@ body { background: var(--poster-cream); }
   .practical-items h3 { font-size: 23px; }
   .faq summary { font-size: 15px; line-height: 1.4; }
   .faq details p { font-size: 14px; line-height: 1.45; }
-  .closing { padding-top: 55px; padding-bottom: 55px; }
+  .closing { padding-top: 30px; padding-bottom: 30px; }
+  .closing .eyebrow { margin-bottom: 10px; }
+  .closing h2 { margin-bottom: 14px; font-size: 32px; line-height: .98; }
+  .closing .button { min-height: 48px; }
   .closing::before { opacity: .08; }
   .closing .button { width: 100%; }
   .footer { background: var(--poster-cream); }

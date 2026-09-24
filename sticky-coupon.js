@@ -4,7 +4,8 @@
   const float = document.querySelector('.coupon-float');
   const heroAction = document.querySelector('.hero [data-discount-open]');
   const closingAction = document.querySelector('.closing [data-discount-open]');
-  if (!header || !float || !heroAction || !closingAction) return;
+  const legalFooter = document.querySelector('.legal-footer');
+  if (!header || !float || !heroAction || !closingAction || !legalFooter) return;
 
   const setHeader = isScrolled => header.classList.toggle('is-scrolled', isScrolled);
   const inViewport = element => {
@@ -29,7 +30,7 @@
 
   if (!('IntersectionObserver' in window)) {
     const update = () => {
-      float.classList.toggle('is-visible', !inViewport(heroAction) && !inViewport(closingAction));
+      float.classList.toggle('is-visible', !inViewport(heroAction) && !inViewport(closingAction) && !inViewport(legalFooter));
     };
     document.documentElement.classList.add('coupon-enhanced');
     window.addEventListener('scroll', update, { passive: true });
@@ -41,15 +42,18 @@
   document.documentElement.classList.add('coupon-enhanced');
   let heroVisible = inViewport(heroAction);
   let closingVisible = inViewport(closingAction);
-  const updateFloat = () => float.classList.toggle('is-visible', !heroVisible && !closingVisible);
+  let footerVisible = inViewport(legalFooter);
+  const updateFloat = () => float.classList.toggle('is-visible', !heroVisible && !closingVisible && !footerVisible);
   const actionObserver = new IntersectionObserver(entries => {
     for (const entry of entries) {
       if (entry.target === heroAction) heroVisible = entry.isIntersecting;
       if (entry.target === closingAction) closingVisible = entry.isIntersecting;
+      if (entry.target === legalFooter) footerVisible = entry.isIntersecting;
     }
     updateFloat();
   }, { threshold: 0 });
   actionObserver.observe(heroAction);
   actionObserver.observe(closingAction);
+  actionObserver.observe(legalFooter);
   updateFloat();
 })();
