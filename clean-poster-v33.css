@@ -846,3 +846,44 @@ h2 em,
   }
   .closing .closing-content .button { width: 100%; }
 }
+
+/* v39: compact first screen for short desktop and tablet viewports. */
+@media (min-width: 701px) and (max-height: 700px) {
+  .hero { min-height: 0; }
+  .hero-copy {
+    justify-content: flex-start;
+    padding-top: clamp(30px, 6vh, 46px);
+    padding-bottom: 40px;
+  }
+  .hero-visual { min-height: 540px; }
+}
+
+@media (min-width: 701px) and (max-height: 500px) {
+  .hero-copy { padding-top: 28px; }
+  .hero-visual { min-height: 500px; }
+}
+
+/* v40: the hero pattern fades into the section instead of ending as a rectangle. */
+.hero-copy::after {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: 280px;
+  transform: none;
+  -webkit-mask-image: radial-gradient(ellipse 88% 112% at 0 100%, #000 0 34%, rgba(0, 0, 0, .78) 56%, transparent 100%);
+  mask-image: radial-gradient(ellipse 88% 112% at 0 100%, #000 0 34%, rgba(0, 0, 0, .78) 56%, transparent 100%);
+}
+
+@media (max-width: 700px) {
+  .hero-copy::after {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 150px;
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(ellipse 105% 120% at 0 100%, #000 0 34%, rgba(0, 0, 0, .72) 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 105% 120% at 0 100%, #000 0 34%, rgba(0, 0, 0, .72) 58%, transparent 100%);
+  }
+}
