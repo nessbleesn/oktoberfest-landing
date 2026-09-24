@@ -327,6 +327,20 @@ h2 em,
 .faq details:last-child { border-color: var(--poster-line); }
 .faq summary { font-size: 17px; font-weight: 700; }
 .faq summary::after { color: var(--poster-blue); }
+.faq details a {
+  color: var(--poster-blue);
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.faq details ul {
+  margin: -12px 30px 25px 0;
+  padding-left: 22px;
+  color: var(--poster-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.faq details li + li { margin-top: 4px; }
 
 .closing {
   max-width: none;
@@ -339,6 +353,23 @@ h2 em,
 .closing .button { margin-inline: auto; background: var(--poster-paper); }
 
 .footer.legal-footer { border-top: 0; background: var(--poster-forest); }
+.legal-footer__notice {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+  color: rgba(247, 240, 223, .7);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .legal-footer__notice {
+    margin-top: 10px;
+    padding-top: 11px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+}
 
 @media (max-width: 1050px) and (min-width: 701px) {
   .site-header .header { min-height: 70px; }
@@ -519,6 +550,16 @@ h2 em,
 .day-tabs a[aria-current="date"]:hover { transform: translate(-3px, -6px); }
 .day-tabs span { color: var(--poster-gold); font-weight: 700; }
 .day-tabs strong { margin-top: 13px; font-size: clamp(31px, 3vw, 43px); }
+.day-tabs .day-hours {
+  display: block;
+  margin: 8px 0 9px;
+  color: var(--poster-paper);
+  font-size: clamp(15px, 1.35vw, 19px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+  line-height: 1;
+  white-space: nowrap;
+}
 .day-tabs small { max-width: 180px; color: #d7e0d5; font-size: 12px; }
 
 .activity-grid {
@@ -634,6 +675,8 @@ h2 em,
   .day-tabs a[aria-current="date"] { filter: drop-shadow(4px 4px 0 var(--poster-blue)); }
   .day-tabs span { font-size: 8px; }
   .day-tabs strong { margin-top: 10px; font-size: 18px; }
+  .day-tabs .day-hours { margin: 6px 0 0; font-size: 12px; letter-spacing: 0; }
+  .faq details ul { margin-right: 8px; font-size: 14px; line-height: 1.5; }
 
   .activity-grid { grid-template-columns: 1fr; grid-template-areas: "race" "pretzel" "quiz"; gap: 10px; }
   .activity-grid article,
@@ -666,6 +709,7 @@ h2 em,
 
 @media (max-width: 359px) {
   .family h3 { font-size: 42px; }
+  .day-tabs .day-hours { font-size: 11px; letter-spacing: -.01em; }
 }
 
 /* v36 softer shape language: rounded cards and controls. */
