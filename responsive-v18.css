@@ -146,6 +146,24 @@ summary {
   .discount-dialog {
     width: calc(100% - 20px);
   }
+
+  .reasons p,
+  .food-copy > p:not(.eyebrow),
+  .dish-note p,
+  .activity-grid p,
+  .family p:not(.eyebrow),
+  .practical p,
+  .faq details p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .program-heading p,
+  .day-intro > p:not(.eyebrow),
+  .timeline p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
 }
 
 @media (max-width: 359px) {
