@@ -211,6 +211,8 @@
 
 .visual-section-heading h2 { max-width: 960px; margin: 0; font-size: clamp(46px, 5.5vw, 78px); line-height: .92; }
 
+.experience-controls { display: none; }
+
 .experience-rail {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -413,19 +415,53 @@
 .visual-first .faq-more-list details { border-top: 1px solid var(--poster-line); }
 .visual-first .faq-more-list details:last-child { border-bottom: 0; }
 
-/* Stronger compact ending */
-.visual-first .closing { padding-block: clamp(22px, 3vw, 38px); }
-.visual-first .closing-stage { min-height: clamp(280px, 32vw, 400px); border-radius: var(--vf-radius); }
-.visual-first .closing-content { width: min(100%, 680px); }
-.visual-first .closing .closing-content h2 { font-size: clamp(44px, 5vw, 70px); line-height: .9; }
+/* Compact closing banner with independent desktop and mobile crops. */
+.visual-first .closing { padding-block: 22px; background: var(--poster-paper); }
+.visual-first .closing-stage {
+  width: min(100%, 980px);
+  height: 270px;
+  min-height: 0;
+  aspect-ratio: auto;
+  border: 6px solid var(--poster-gold);
+  border-radius: var(--vf-radius);
+  box-shadow: 6px 6px 0 var(--poster-blue);
+}
+.visual-first .closing-content { width: min(100%, 560px); padding: 24px 34px; }
+.visual-first .closing .closing-content .eyebrow { margin-bottom: 9px; }
+.visual-first .closing .closing-content h2 { margin-bottom: 16px; font-size: clamp(42px, 3.7vw, 54px); line-height: .9; }
 .visual-first .closing .button { border-radius: 14px; }
+
+/* The legal links remain full touch targets without making the footer a second section. */
+.visual-first .legal-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 28px;
+  row-gap: 6px;
+  padding-block: 20px;
+}
+.visual-first .legal-footer__intro { grid-column: 1 / -1; padding-bottom: 10px; }
+.visual-first .legal-footer__meta { grid-column: 1; grid-row: 2; margin: 0; }
+.visual-first .legal-footer__meta a { display: inline; min-height: 0; }
+.visual-first .legal-footer__operator { grid-column: 1; grid-row: 3; margin: 0; }
+.visual-first .legal-footer__links { grid-column: 2; grid-row: 2 / 4; align-self: center; margin: 0; gap: 8px 18px; }
+.visual-first .legal-footer__notice { grid-column: 1 / -1; margin: 5px 0 0; padding-top: 8px; }
 
 .visual-first .coupon-float {
   right: max(18px, env(safe-area-inset-right));
   left: auto;
+  bottom: max(var(--coupon-clearance, 18px), env(safe-area-inset-bottom));
   width: clamp(94px, 8vw, 118px);
   height: clamp(94px, 8vw, 118px);
+  transition: opacity .2s, transform .2s, visibility .2s, bottom .22s ease-out;
 }
+
+@keyframes coupon-gentle-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+.visual-first .coupon-float img { animation: coupon-gentle-float 4.8s ease-in-out infinite; }
+.page-hidden .visual-first .coupon-float img { animation-play-state: paused; }
 
 @media (max-width: 900px) {
   .visual-first .hero { min-height: min(680px, calc(100svh - var(--sticky-header-h))); }
@@ -524,11 +560,34 @@
 
   .visual-section-heading h2 { font-size: clamp(40px, 12vw, 50px); }
 
+  .experience-enhanced .experience-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    margin: -7px 0 12px;
+  }
+
+  .experience-controls button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--poster-forest);
+    border-radius: 50%;
+    background: var(--poster-paper);
+    color: var(--poster-forest);
+    cursor: pointer;
+    font: 24px/1 var(--font-body);
+  }
+
+  .experience-controls button:disabled { opacity: .38; cursor: default; }
+  .experience-controls button:focus-visible { outline: 3px solid var(--poster-blue); outline-offset: 2px; }
+  .experience-position { min-width: 44px; color: var(--poster-forest); font-size: 13px; font-weight: 700; text-align: center; }
+
   .experience-rail {
     display: flex;
     gap: 12px;
-    width: calc(100% + var(--vf-gutter));
-    padding-right: var(--vf-gutter);
+    width: 100%;
+    padding-right: 0;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-snap-type: inline mandatory;
@@ -536,7 +595,7 @@
   }
 
   .experience-rail::-webkit-scrollbar { display: none; }
-  .experience-card { flex: 0 0 min(82vw, 330px); scroll-snap-align: start; border-radius: 20px; }
+  .experience-card { flex: 0 0 100%; aspect-ratio: 1 / 1; scroll-snap-align: start; border-radius: 20px; }
   .experience-card a { padding: 20px; }
   .experience-card h3 { font-size: 39px; }
 
@@ -551,27 +610,29 @@
   .visual-first .program-heading > p { font-size: 11px; }
 
   .visual-first .day-tabs {
-    display: flex;
-    gap: 8px;
-    width: calc(100% + var(--vf-gutter));
-    margin-bottom: 30px;
-    padding: 2px var(--vf-gutter) 8px 0;
-    overflow-x: auto;
-    scroll-snap-type: inline mandatory;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+    margin-bottom: 24px;
+    padding: 3px 2px 8px;
+    overflow: visible;
+    scroll-snap-type: none;
   }
 
-  .visual-first .day-tabs::-webkit-scrollbar { display: none; }
   .visual-first .day-tabs a,
   .visual-first .day-tabs a:last-child {
-    flex: 0 0 min(72vw, 250px);
-    min-height: 122px;
-    padding: 17px;
-    scroll-snap-align: start;
+    min-width: 0;
+    min-height: 104px;
+    padding: 12px 9px;
+    scroll-snap-align: none;
   }
 
-  .visual-first .day-tabs strong { font-size: 25px; }
-  .visual-first .day-tabs small { font-size: 10px; }
+  .visual-first .day-tabs a::after { display: none; }
+  .visual-first .day-tabs span:first-child { font-size: 9px; letter-spacing: .04em; }
+  .visual-first .day-tabs strong { margin-top: 5px; font-size: clamp(17px, 4.8vw, 20px); white-space: nowrap; }
+  .visual-first .day-tabs .day-hours { margin-top: auto; font-size: 12px; }
+  .visual-first .day-tabs small { display: none; }
   .visual-first .day-intro { margin-bottom: 17px; }
   .visual-first .day-intro h3 { font-size: 46px; }
   .visual-first .day-intro > p:last-child { margin-bottom: 0; font-size: 13px; }
@@ -585,13 +646,14 @@
 
   .visual-first .practical-grid { padding-inline: 14px; }
   .visual-first .practical { padding-block: 36px; }
-  .visual-first .practical-main { min-height: 248px; padding: 22px; }
+  .visual-first .practical-main { min-height: 218px; padding: 22px; }
   .visual-first .practical-main h2 { font-size: clamp(42px, 12vw, 52px); }
   .visual-first .practical-main .button { width: 100%; min-height: 50px; }
-  .visual-first .practical-items { grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 8px; }
+  .visual-first .practical-items { grid-template-columns: 1fr; grid-template-rows: none; gap: 8px; }
   .visual-first .practical-items article,
-  .visual-first .practical-items article:last-child { min-height: 145px; padding: 16px; }
-  .visual-first .practical-items h3 { margin-top: 8px; font-size: 22px; overflow-wrap: anywhere; }
+  .visual-first .practical-items article:last-child { min-height: 0; padding: 14px 18px; }
+  .visual-first .practical-items h3 { margin: 7px 0 5px; font-size: 21px; overflow-wrap: normal; }
+  .visual-first .practical-items h3 a { white-space: nowrap; overflow-wrap: normal; font-size: clamp(20px, 6vw, 25px); }
   .visual-first .practical-items p { font-size: 12px; line-height: 1.4; }
 
   .visual-first .faq { display: block; }
@@ -602,16 +664,26 @@
   .visual-first .faq details ul { font-size: 14px; line-height: 1.48; }
   .visual-first .faq-more-list { padding-left: 12px; }
 
-  .visual-first .closing { padding: 20px 14px; }
-  .visual-first .closing-stage { min-height: 310px; border-radius: 20px; }
-  .visual-first .closing .closing-content { padding: 20px; }
-  .visual-first .closing .closing-content h2 { font-size: clamp(38px, 11vw, 46px); }
-  .visual-first .closing .button { min-height: 50px; }
+  .visual-first .closing { padding: 18px 14px; }
+  .visual-first .closing-stage { height: 290px; min-height: 0; aspect-ratio: auto; border-width: 4px; border-radius: 20px; }
+  .visual-first .closing-stage::after { background: linear-gradient(0deg, rgb(9 42 34 / 96%) 0%, rgb(9 42 34 / 76%) 36%, rgb(9 42 34 / 15%) 79%); }
+  .visual-first .closing-banner img { object-position: center 54%; }
+  .visual-first .closing .closing-content { justify-content: flex-end; width: 100%; padding: 16px 18px 18px; }
+  .visual-first .closing .closing-content .eyebrow { margin-bottom: 7px; }
+  .visual-first .closing .closing-content h2 { margin-bottom: 12px; font-size: clamp(33px, 9.4vw, 39px); }
+  .visual-first .closing .button { min-height: 48px; }
+
+  .visual-first .legal-footer__inner { display: flex; flex-direction: column; gap: 0; padding-block: 12px max(12px, env(safe-area-inset-bottom)); }
+  .visual-first .legal-footer__intro { min-height: 44px; padding-bottom: 3px; }
+  .visual-first .legal-footer__meta { margin-top: 4px; }
+  .visual-first .legal-footer__operator { margin-top: 0; }
+  .visual-first .legal-footer__links { margin-top: 4px; gap: 0 14px; }
+  .visual-first .legal-footer__notice { margin-top: 4px; padding-top: 6px; }
 
   .visual-first .coupon-float {
     right: max(12px, env(safe-area-inset-right));
     left: auto;
-    bottom: max(14px, env(safe-area-inset-bottom));
+    bottom: max(var(--coupon-clearance, 14px), env(safe-area-inset-bottom));
     width: 96px;
     height: 96px;
   }
@@ -623,10 +695,13 @@
   .visual-first .header-phone span { font-size: 10px; }
   .quick-facts strong { font-size: 14px; }
   .visual-first .timeline article { grid-template-columns: 102px minmax(0, 1fr); }
-  .visual-first .practical-items { grid-template-columns: 1fr; }
+  .visual-first .day-tabs a,
+  .visual-first .day-tabs a:last-child { padding-inline: 7px; }
+  .visual-first .day-tabs strong { font-size: 17px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .visual-first .hero-visual img { animation: none; }
   .experience-card img { transition: none; }
+  .visual-first .coupon-float img { animation: none; }
 }

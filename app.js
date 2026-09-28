@@ -13,6 +13,37 @@ selectDay(['friday','saturday','sunday'].includes(location.hash.slice(1))?locati
 dayLinks.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();selectDay(a.dataset.day,true);track('day_select',{day:a.dataset.day});}));
 dayLinks.forEach((a,index)=>a.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?2:(index+(e.key==='ArrowRight'?1:2))%3;dayLinks[next].focus();dayLinks[next].click();}));
 window.addEventListener('hashchange',()=>selectDay(location.hash.slice(1)));
+
+// Visible mobile controls for the image cards; touch swiping remains available.
+const experienceRail=document.querySelector('.experience-rail');
+const experienceCards=experienceRail?[...experienceRail.querySelectorAll('.experience-card')]:[];
+const experiencePrev=document.querySelector('[data-experience-prev]');
+const experienceNext=document.querySelector('[data-experience-next]');
+const experiencePosition=document.querySelector('.experience-position');
+if(experienceRail&&experienceCards.length>1&&experiencePrev&&experienceNext&&experiencePosition){
+  document.documentElement.classList.add('experience-enhanced');
+  let experienceFrame=0;
+  const cardOffset=card=>card.getBoundingClientRect().left-experienceRail.getBoundingClientRect().left+experienceRail.scrollLeft;
+  const currentCard=()=>experienceCards.reduce((best,card,index)=>Math.abs(cardOffset(card)-experienceRail.scrollLeft)<Math.abs(cardOffset(experienceCards[best])-experienceRail.scrollLeft)?index:best,0);
+  const updateExperience=()=>{
+    experienceFrame=0;
+    const index=currentCard();
+    experiencePosition.textContent=`${index+1} / ${experienceCards.length}`;
+    experiencePrev.disabled=index===0;
+    experienceNext.disabled=index===experienceCards.length-1;
+  };
+  const scheduleExperience=()=>{if(!experienceFrame)experienceFrame=requestAnimationFrame(updateExperience);};
+  const moveExperience=step=>{
+    const index=Math.max(0,Math.min(experienceCards.length-1,currentCard()+step));
+    experienceRail.scrollTo({left:cardOffset(experienceCards[index]),behavior:reducedMotion.matches?'auto':'smooth'});
+    experiencePosition.textContent=`${index+1} / ${experienceCards.length}`;
+  };
+  experiencePrev.addEventListener('click',()=>moveExperience(-1));
+  experienceNext.addEventListener('click',()=>moveExperience(1));
+  experienceRail.addEventListener('scroll',scheduleExperience,{passive:true});
+  window.addEventListener('resize',scheduleExperience);
+  updateExperience();
+}
 // Analytics is intentionally not installed in a private preview; events can be connected at release.
 function track(name,params={}){window.dispatchEvent(new CustomEvent('festival:analytics',{detail:{name,...params}}));}
 document.querySelectorAll('[data-event]').forEach(a=>a.addEventListener('click',()=>track(a.dataset.event)));

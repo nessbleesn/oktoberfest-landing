@@ -12,7 +12,7 @@
   <link rel="preload" href="assets/fonts/pt-root-ui_regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/BebasNeue-Bold.otf" as="font" type="font/otf" crossorigin>
   <link rel="preload" href="assets/hero-v5-900.avif" imagesrcset="assets/hero-v5-520.avif 520w, assets/hero-v5-900.avif 900w, assets/hero-v5-1100.avif 1100w" imagesizes="(max-width: 700px) 100vw, 48vw" as="image" type="image/avif" fetchpriority="high">
-  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=4"><script src="app.js?v=3.5" defer></script><script src="discount.js?v=1.4" defer></script><script src="sticky-coupon.js?v=3.3" defer></script><script src="legal.js?v=1" defer></script>
+  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=1.4" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=1" defer></script>
 </head>
 <body class="visual-first">
 <a class="skip" href="#main">К содержимому</a>
@@ -63,7 +63,8 @@
 <div class="experience-autumn">
 <section class="experience wrap section" id="experience" aria-labelledby="experience-title">
   <div class="visual-section-heading"><h2 id="experience-title">Главное на фестивале</h2></div>
-  <div class="experience-rail" aria-label="События фестиваля">
+  <div class="experience-controls" role="group" aria-label="Навигация по событиям фестиваля"><button type="button" data-experience-prev aria-controls="experience-rail" aria-label="Предыдущее событие">←</button><span class="experience-position" aria-live="polite">1 / 4</span><button type="button" data-experience-next aria-controls="experience-rail" aria-label="Следующее событие">→</button></div>
+  <div class="experience-rail" id="experience-rail" aria-label="События фестиваля">
     <article class="experience-card">
       <picture><img src="assets/food-v4.webp" width="1100" height="733" loading="lazy" decoding="async" alt="Фестивальный стол с грилем, брецелями и кружкой хлебного кваса"></picture>
       <a href="#program"><span>Весь фестиваль</span><h3>Гриль и брецели</h3><p>Рулька, колбаски и кукуруза</p></a>
