@@ -19,7 +19,7 @@ document.querySelectorAll('[data-event]').forEach(a=>a.addEventListener('click',
 
 // Progressive motion: no scroll hijacking, no continuously animated copy.
 let revealObserver;
-const revealNodes=[...document.querySelectorAll('.experience h2,.reasons article,.program-heading,.food-photo,.food-copy,.activities h2,.activity-grid article,.family,.practical-grid>div,.faq>div,.closing h2')];
+const revealNodes=[...document.querySelectorAll('.quick-facts article,.visual-section-heading,.experience-card,.program-heading,.practical-grid>div,.faq>div,.closing h2')];
 function stopMotion(){
   document.documentElement.classList.remove('motion-ready');
   if(revealObserver)revealObserver.disconnect();
