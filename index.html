@@ -12,7 +12,7 @@
   <link rel="preload" href="assets/fonts/pt-root-ui_regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/BebasNeue-Bold.otf" as="font" type="font/otf" crossorigin>
   <link rel="preload" href="assets/hero-v5-900.avif" imagesrcset="assets/hero-v5-520.avif 520w, assets/hero-v5-900.avif 900w, assets/hero-v5-1100.avif 1100w" imagesizes="(max-width: 700px) 100vw, 48vw" as="image" type="image/avif" fetchpriority="high">
-  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=1.4" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=1" defer></script>
+  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=1.5" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=1" defer></script>
 </head>
 <body class="visual-first">
 <a class="skip" href="#main">К содержимому</a>
@@ -37,8 +37,8 @@
     <h1 id="hero-title">Октоберфест</h1>
     <p class="hero-subtitle"><strong class="hero-place">В «Сказке»</strong></p>
     <p class="hero-lead">Гриль, музыка и игры в осеннем парке</p>
-    <a class="button discount-trigger" href="#discount-preview" data-discount-open data-event="discount_open">Получить купон <span aria-hidden="true">↗</span></a>
-    <p class="discount-teaser" id="discount-preview">Скидка 10% на еду</p>
+    <a class="button discount-trigger" href="#discount-preview" data-discount-open data-event="discount_open">О купоне <span aria-hidden="true">↗</span></a>
+    <p class="discount-teaser" id="discount-preview">Купон −10% на еду скоро</p>
     <div class="hero-meta"><span><strong>Вход свободный</strong></span><span>Крылатская, 18</span></div>
   </div>
   <figure class="hero-visual">
@@ -106,24 +106,16 @@
 <details><summary>Можно ли прийти с домашними животными?</summary><p>Вход на территорию парка с домашними животными разрешён, если их высота в холке не превышает 35 см.</p></details>
 <details class="faq-more"><summary>Ещё вопросы</summary><div class="faq-more-list"><details><summary>Можно ли приехать с детьми?</summary><p>Да. В субботу и воскресенье с 11:00 до 14:00 на площади перед сценой проходят детские мастер-классы.</p></details><details><summary>Когда будет музыка?</summary><p>В субботу, 24 октября, с 18:00 до 21:00 на сцене пройдёт DJ-сет.</p></details><details><summary>Что будет при плохой погоде?</summary><p>Ведущий и интерактивы переместятся в лофт и на прилегающую территорию. Изменения объявят организаторы.</p></details><details><summary>Где проходит фестиваль?</summary><p>В парке «Сказка» по адресу: Москва, ул. Крылатская, 18. Ближайшее метро: «Крылатское».</p></details></div></details>
 </div></section>
-<section class="closing wrap"><div class="closing-stage"><figure class="closing-banner"><picture><source srcset="assets/autumn-park-banner-v1.avif" type="image/avif"><img src="assets/autumn-park-banner-v1.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Осенний вид на парк «Сказка», колесо обозрения и американские горки"></picture></figure><div class="closing-content"><p class="eyebrow">23-25 ОКТЯБРЯ / ПАРК «СКАЗКА»</p><h2>Осень проходит<br><em>Встречи остаются</em></h2><a class="button discount-trigger" href="#discount-preview" data-discount-open data-event="discount_open">Получить купон <span aria-hidden="true">↗</span></a></div></div></section>
+<section class="closing wrap"><div class="closing-stage"><figure class="closing-banner"><picture><source srcset="assets/autumn-park-banner-v1.avif" type="image/avif"><img src="assets/autumn-park-banner-v1.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Осенний вид на парк «Сказка», колесо обозрения и американские горки"></picture></figure><div class="closing-content"><p class="eyebrow">23-25 ОКТЯБРЯ / ПАРК «СКАЗКА»</p><h2>Осень проходит<br><em>Встречи остаются</em></h2><a class="button discount-trigger" href="#discount-preview" data-discount-open data-event="discount_open">О купоне <span aria-hidden="true">↗</span></a></div></div></section>
 </main>
-<a class="coupon-float" href="#discount-preview" data-discount-open data-event="discount_open" aria-label="Получить купон на скидку 10% на еду"><img src="assets/coupon-badge-v4.webp" width="256" height="256" alt="" decoding="async"></a>
+<a class="coupon-float" href="#discount-preview" data-discount-open data-event="discount_open" aria-label="Узнать о купоне на скидку 10% на еду"><img src="assets/coupon-badge-v4.webp" width="256" height="256" alt="" decoding="async"></a>
 <dialog class="discount-dialog" id="discount-dialog" aria-labelledby="discount-title" aria-describedby="discount-intro">
   <div class="discount-card">
-    <button class="discount-close" type="button" data-discount-close aria-label="Закрыть форму">×</button>
+    <button class="discount-close" type="button" data-discount-close aria-label="Закрыть окно">×</button>
     <p class="eyebrow">ОКТОБЕРФЕСТ В «СКАЗКЕ»</p>
     <h2 id="discount-title">Купон <em>−10%</em><br>на еду</h2>
-    <p class="discount-intro" id="discount-intro">Оставьте почту, отправим код купона</p>
-    <form id="discount-form" action="#" method="post">
-      <div class="discount-field"><label for="discount-name">Имя <span class="field-optional">необязательно</span></label><input id="discount-name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Как к вам обращаться…"></div>
-      <div class="discount-field"><label for="discount-phone">Телефон <span class="field-optional">необязательно</span></label><input id="discount-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" placeholder="+7 (___) ___-__-__"></div>
-      <div class="discount-field"><label for="discount-email">Почта <span class="required-mark" aria-hidden="true">*</span></label><input id="discount-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" maxlength="254" placeholder="example@mail.ru…" required aria-describedby="discount-email-hint"><small id="discount-email-hint">Сюда придёт письмо с кодом купона</small></div>
-      <label class="discount-consent"><input id="discount-personal" name="personal-consent" type="checkbox" required><span>Согласен на обработку персональных данных <span class="required-mark" aria-hidden="true">*</span><small>Ознакомьтесь с <a href="https://parkskazka.ru/o-parke/dokumenty/soglasie-na-obrabotku-personalnyh-dannyh" data-legal-url="https://parkskazka.ru/o-parke/dokumenty/soglasie-na-obrabotku-personalnyh-dannyh" data-legal-title="Согласие на обработку персональных данных">согласием на обработку</a> и <a href="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-url="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-title="Политика конфиденциальности">политикой конфиденциальности</a></small></span></label>
-      <label class="discount-consent"><input id="discount-marketing" name="marketing-consent" type="checkbox"><span>Хочу получать новости и предложения парка <small>Необязательно · <a href="https://parkskazka.ru/o-parke/dokumenty/soglasie-na-reklamnye-soobshcheniya" target="_blank" rel="noopener">согласие на рекламные сообщения</a></small></span></label>
-      <button class="discount-submit" type="submit" disabled>Отправить заявку <span aria-hidden="true">↗</span></button>
-      <p class="discount-status" id="discount-status" role="status" aria-live="polite"></p>
-    </form>
+    <p class="discount-intro" id="discount-intro">Это предварительная версия страницы. Купоны пока не выдаются; форму добавим после запуска отправки кода.</p>
+    <button class="discount-submit" type="button" data-discount-close>Понятно</button>
   </div>
 </dialog>
 <footer class="footer legal-footer" id="footer">
