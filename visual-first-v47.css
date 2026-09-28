@@ -37,7 +37,7 @@
   grid-template: 1fr / 1fr;
   width: 100%;
   max-width: none;
-  min-height: min(850px, calc(100svh - var(--sticky-header-h)));
+  min-height: clamp(540px, 68svh, 680px);
   padding: 0;
   isolation: isolate;
 }
@@ -53,7 +53,7 @@
   width: min(100%, 1536px);
   min-width: 0;
   margin-inline: auto;
-  padding: clamp(84px, 12vh, 150px) max(var(--vf-gutter), calc((100vw - 1536px) / 2 + var(--vf-gutter))) clamp(48px, 8vh, 92px);
+  padding: clamp(56px, 8vh, 100px) max(var(--vf-gutter), calc((100vw - 1536px) / 2 + var(--vf-gutter))) clamp(38px, 6vh, 68px);
   overflow: visible;
   background: none;
   color: #fffdf8;
@@ -71,7 +71,7 @@
   max-width: none;
   margin: 16px 0 2px;
   color: #fffdf8;
-  font-size: clamp(82px, 11vw, 168px);
+  font-size: clamp(72px, 9vw, 130px);
   line-height: .8;
   letter-spacing: .002em;
   white-space: nowrap;
@@ -82,7 +82,7 @@
 .visual-first .hero-subtitle {
   margin: 0 0 20px;
   color: var(--poster-gold);
-  font-size: clamp(44px, 6vw, 92px);
+  font-size: clamp(40px, 5vw, 72px);
   line-height: .92;
   text-shadow: 0 3px 24px rgb(8 34 29 / 34%);
 }
@@ -205,16 +205,11 @@
 .visual-first .experience-autumn { background: var(--poster-paper); }
 
 .visual-section-heading {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 8px 24px;
+  display: block;
   margin-bottom: clamp(24px, 4vw, 46px);
 }
 
-.visual-section-heading .eyebrow { grid-column: 1 / -1; margin: 0; }
-.visual-section-heading h2 { margin: 0; font-size: clamp(48px, 6vw, 88px); line-height: .9; }
-.visual-section-heading > p:last-child { margin: 0 0 6px; color: var(--poster-muted); font-size: 13px; }
+.visual-section-heading h2 { max-width: 960px; margin: 0; font-size: clamp(46px, 5.5vw, 78px); line-height: .92; }
 
 .experience-rail {
   display: grid;
@@ -354,7 +349,7 @@
 
 /* Practical information */
 .visual-first .practical {
-  padding-block: var(--vf-section);
+  padding-block: clamp(28px, 4vw, 52px);
   background: var(--poster-ice);
 }
 
@@ -374,8 +369,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 420px;
-  padding: clamp(28px, 5vw, 66px);
+  min-height: 320px;
+  padding: clamp(26px, 3.5vw, 48px);
   background:
     linear-gradient(135deg, rgb(18 63 53 / 98%), rgb(18 63 53 / 80%)),
     repeating-conic-gradient(from 45deg, #fff 0 25%, transparent 0 50%) 0 0 / 50px 50px;
@@ -383,15 +378,24 @@
 }
 
 .visual-first .practical-main .eyebrow { color: var(--poster-gold); }
-.visual-first .practical-main h2 { margin: auto 0 10px; color: #fffdf8; font-size: clamp(54px, 7vw, 96px); line-height: .86; }
+.visual-first .practical-main h2 { margin: auto 0 10px; color: #fffdf8; font-size: clamp(48px, 5.6vw, 78px); line-height: .9; }
 .visual-first .practical-main > p:not(.eyebrow) { margin: 0 0 24px; color: rgb(255 253 248 / 74%); }
 .visual-first .practical-main .button { background: var(--poster-gold); color: var(--poster-forest); }
 
-.visual-first .practical-items { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
+.visual-first .practical-items { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; }
 .visual-first .practical-items article,
-.visual-first .practical-items article:last-child { padding: clamp(24px, 3vw, 38px); }
-.visual-first .practical-items h3 { font-size: clamp(27px, 3vw, 42px); line-height: 1; }
-.visual-first .practical-items h3 a { color: inherit; text-decoration: none; }
+.visual-first .practical-items article:last-child { padding: clamp(20px, 2.4vw, 32px); }
+.visual-first .practical-items h3 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.08; }
+.visual-first .practical-items h3 a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 2px 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-decoration: none;
+}
 
 /* FAQ */
 .visual-first .faq {
@@ -410,10 +414,10 @@
 .visual-first .faq-more-list details:last-child { border-bottom: 0; }
 
 /* Stronger compact ending */
-.visual-first .closing { padding-block: clamp(42px, 6vw, 76px); }
-.visual-first .closing-stage { min-height: clamp(500px, 65vw, 720px); border-radius: var(--vf-radius); }
-.visual-first .closing-content { width: min(100%, 900px); }
-.visual-first .closing .closing-content h2 { font-size: clamp(58px, 8vw, 118px); line-height: .86; }
+.visual-first .closing { padding-block: clamp(22px, 3vw, 38px); }
+.visual-first .closing-stage { min-height: clamp(280px, 32vw, 400px); border-radius: var(--vf-radius); }
+.visual-first .closing-content { width: min(100%, 680px); }
+.visual-first .closing .closing-content h2 { font-size: clamp(44px, 5vw, 70px); line-height: .9; }
 .visual-first .closing .button { border-radius: 14px; }
 
 .visual-first .coupon-float {
@@ -424,13 +428,13 @@
 }
 
 @media (max-width: 900px) {
-  .visual-first .hero { min-height: calc(100svh - var(--sticky-header-h)); }
+  .visual-first .hero { min-height: min(680px, calc(100svh - var(--sticky-header-h))); }
   .visual-first .hero h1 { font-size: clamp(70px, 13vw, 105px); }
   .visual-first .hero-subtitle { font-size: clamp(48px, 8.5vw, 68px); }
   .quick-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .experience-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .visual-first .practical-grid { grid-template-columns: 1fr; }
-  .visual-first .practical-main { min-height: 360px; }
+  .visual-first .practical-main { min-height: 300px; }
 }
 
 @media (min-width: 701px) and (max-height: 650px) {
@@ -452,7 +456,7 @@
   .visual-first .header-phone { font-size: 11px; }
 
   .visual-first .hero {
-    min-height: calc(100svh - var(--sticky-header-h));
+    min-height: min(640px, calc(100svh - var(--sticky-header-h)));
     max-height: 780px;
   }
 
@@ -463,13 +467,13 @@
 
   .visual-first .hero h1 {
     margin-top: 10px;
-    font-size: clamp(54px, 17vw, 74px);
+    font-size: clamp(48px, 15vw, 66px);
     line-height: .82;
   }
 
   .visual-first .hero-subtitle {
     margin-bottom: 12px;
-    font-size: clamp(38px, 12vw, 50px);
+    font-size: clamp(34px, 10.5vw, 44px);
   }
 
   .visual-first .hero-lead {
@@ -515,12 +519,10 @@
   .visual-first .section { padding-block: 48px; }
 
   .visual-section-heading {
-    grid-template-columns: 1fr auto;
     margin-bottom: 22px;
   }
 
-  .visual-section-heading h2 { font-size: clamp(42px, 13vw, 54px); }
-  .visual-section-heading > p:last-child { font-size: 11px; }
+  .visual-section-heading h2 { font-size: clamp(40px, 12vw, 50px); }
 
   .experience-rail {
     display: flex;
@@ -582,13 +584,14 @@
   .visual-first .timeline .highlight { margin-inline: 0; padding-inline: 13px; }
 
   .visual-first .practical-grid { padding-inline: 14px; }
-  .visual-first .practical-main { min-height: 300px; padding: 26px; }
-  .visual-first .practical-main h2 { font-size: clamp(48px, 14vw, 60px); }
+  .visual-first .practical { padding-block: 36px; }
+  .visual-first .practical-main { min-height: 248px; padding: 22px; }
+  .visual-first .practical-main h2 { font-size: clamp(42px, 12vw, 52px); }
   .visual-first .practical-main .button { width: 100%; min-height: 50px; }
   .visual-first .practical-items { grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 8px; }
   .visual-first .practical-items article,
-  .visual-first .practical-items article:last-child { min-height: 165px; padding: 18px; }
-  .visual-first .practical-items h3 { margin-top: 8px; font-size: 23px; overflow-wrap: anywhere; }
+  .visual-first .practical-items article:last-child { min-height: 145px; padding: 16px; }
+  .visual-first .practical-items h3 { margin-top: 8px; font-size: 22px; overflow-wrap: anywhere; }
   .visual-first .practical-items p { font-size: 12px; line-height: 1.4; }
 
   .visual-first .faq { display: block; }
@@ -599,10 +602,10 @@
   .visual-first .faq details ul { font-size: 14px; line-height: 1.48; }
   .visual-first .faq-more-list { padding-left: 12px; }
 
-  .visual-first .closing { padding: 38px 14px; }
-  .visual-first .closing-stage { min-height: 510px; border-radius: 20px; }
-  .visual-first .closing .closing-content { padding: 28px 20px; }
-  .visual-first .closing .closing-content h2 { font-size: clamp(47px, 14vw, 59px); }
+  .visual-first .closing { padding: 20px 14px; }
+  .visual-first .closing-stage { min-height: 310px; border-radius: 20px; }
+  .visual-first .closing .closing-content { padding: 20px; }
+  .visual-first .closing .closing-content h2 { font-size: clamp(38px, 11vw, 46px); }
   .visual-first .closing .button { min-height: 50px; }
 
   .visual-first .coupon-float {
