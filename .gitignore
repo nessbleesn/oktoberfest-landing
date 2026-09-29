@@ -18,3 +18,11 @@ assets/food.webp
 # Local system files.
 .DS_Store
 Thumbs.db
+
+# Local-only integration secrets and test databases.
+server/.env
+server/.env.*
+server/*.sqlite
+server/*.sqlite-*
+tests/output/
+deploy/
