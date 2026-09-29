@@ -193,20 +193,56 @@ final class UniSenderClient implements PromoContactClient {
         return !empty($promo['marketing_consent']) ? 'oktoberfest-2026,marketing-consent' : 'oktoberfest-2026';
     }
 
+    public static function importFields(array $promo): array {
+        $fields = self::contactFields($promo);
+        return [
+            'field_names' => array_keys($fields),
+            'data' => [array_values($fields)],
+            'overwrite_tags' => 0,
+            'overwrite_lists' => 0
+        ];
+    }
+
+    private function post(string $method, array $payload): ?array {
+        $ch = curl_init('https://api.unisender.com/ru/api/' . $method . '?format=json');
+        if ($ch === false) return null;
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($payload, '', '&', PHP_QUERY_RFC3986),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 12,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+            CURLOPT_FOLLOWLOCATION => false
+        ]);
+        $body = curl_exec($ch);
+        $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if (!is_string($body) || $status !== 200) return null;
+        $response = json_decode($body, true);
+        return is_array($response) && !isset($response['error']) ? $response : null;
+    }
+
     public function sync(array $promo): bool {
         $key = getenv('UNISENDER_API_KEY');
         $list = getenv('UNISENDER_LIST_ID');
         if (!$key || !$list || !ctype_digit((string)$list)) return false;
-        $post = http_build_query(['api_key' => $key, 'list_ids' => $list, 'fields' => self::contactFields($promo), 'tags' => self::contactTags($promo), 'double_optin' => 3, 'overwrite' => 2], '', '&', PHP_QUERY_RFC3986);
-        $ch = curl_init('https://api.unisender.com/ru/api/subscribe?format=json');
-        if ($ch === false) return false;
-        curl_setopt_array($ch, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => $post, CURLOPT_RETURNTRANSFER => true, CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_TIMEOUT => 12, CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'], CURLOPT_FOLLOWLOCATION => false]);
-        $body = curl_exec($ch);
-        $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        if ($body === false || $status !== 200) return false;
-        $response = json_decode($body, true);
-        return is_array($response) && isset($response['result']['person_id']) && !isset($response['error']);
+        // Put the code on the contact before a list-join automation can send its email.
+        // This also updates a pre-existing contact without clearing other fields, lists or tags.
+        $import = $this->post('importContacts', ['api_key' => $key] + self::importFields($promo));
+        $summary = $import['result'] ?? null;
+        if (!is_array($summary) || (int)($summary['total'] ?? 0) !== 1
+            || (int)($summary['invalid'] ?? 1) !== 0
+            || (int)($summary['inserted'] ?? 0) + (int)($summary['updated'] ?? 0) !== 1) return false;
+        $response = $this->post('subscribe', [
+            'api_key' => $key,
+            'list_ids' => $list,
+            'fields' => self::contactFields($promo),
+            'tags' => self::contactTags($promo),
+            'double_optin' => 3,
+            'overwrite' => 2
+        ]);
+        return isset($response['result']['person_id']);
     }
 }
 

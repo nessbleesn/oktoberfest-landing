@@ -52,6 +52,9 @@ try {
     check(($good->fields['promo_code'] ?? '') === 'EDA7', 'UniSender field'); $checks++;
     check(UniSenderClient::contactTags($promo) === 'oktoberfest-2026', 'no marketing tag without consent'); $checks++;
     check(UniSenderClient::contactTags(['marketing_consent' => 1]) === 'oktoberfest-2026,marketing-consent', 'marketing tag with consent'); $checks++;
+    $import = UniSenderClient::importFields($promo);
+    check($import['field_names'] === ['email', 'Name', 'promo_code', 'phone'] && $import['data'][0][2] === 'EDA7', 'UniSender import fields before subscribe'); $checks++;
+    check($import['overwrite_tags'] === 0 && $import['overwrite_lists'] === 0, 'UniSender import preserves tags and lists'); $checks++;
     $leadFields = BitrixLeadClient::leadFields($promo);
     check(($leadFields['ORIGIN_ID'] ?? '') === $promo['application_id'] && str_contains($leadFields['COMMENTS'] ?? '', 'EDA7'), 'Bitrix lead fields'); $checks++;
     $failedLead = new FakeLeadClient(); $failedLead->fails = true;
