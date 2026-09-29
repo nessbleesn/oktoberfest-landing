@@ -1,13 +1,8 @@
-/* Oktoberfest analytics: no third-party requests before explicit cookie consent. */
+/* Oktoberfest analytics: counters load on page view; the cookie notice is informational. */
 (()=>{
   const metrikaId=107188789;
   const vkId=3794718;
-  const cookieKey='oktoberfest_cookie_choice_v1';
   let started=false;
-  const allowed=()=>{
-    try{return localStorage.getItem(cookieKey)==='analytics';}
-    catch{return false;}
-  };
   const addScript=(id,src)=>{
     if(document.getElementById(id))return;
     const script=document.createElement('script');
@@ -17,7 +12,7 @@
     document.head.append(script);
   };
   const start=()=>{
-    if(started||!allowed())return;
+    if(started)return;
     started=true;
     window.ym=window.ym||function(){(window.ym.a=window.ym.a||[]).push(arguments);};
     window.ym.l=window.ym.l||Date.now();
@@ -31,10 +26,10 @@
     addScript('tmr-code','https://top-fwz1.mail.ru/js/code.js');
   };
   const vkGoal=goal=>{
-    if(started&&allowed())window._tmr.push({type:'reachGoal',id:vkId,goal});
+    if(started)window._tmr.push({type:'reachGoal',id:vkId,goal});
   };
   const metrikaGoal=goal=>{
-    if(started&&allowed())window.ym(metrikaId,'reachGoal',goal);
+    if(started)window.ym(metrikaId,'reachGoal',goal);
   };
   window.addEventListener('festival:analytics',event=>{
     if(event.detail?.name==='discount_open')vkGoal('click-get-sale');
@@ -43,10 +38,6 @@
     if(event.detail?.success!==true||event.detail?.newLead!==true)return;
     metrikaGoal('send_get_sale');
     vkGoal('send-get-sale');
-  });
-  document.addEventListener('cookie-choice',event=>{
-    if(event.detail?.choice==='analytics')start();
-    else if(started)location.reload();
   });
   start();
 })();

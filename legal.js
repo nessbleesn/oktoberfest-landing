@@ -4,29 +4,32 @@
   const body = document.querySelector('#legal-dialog-body');
   const closeButton = dialog?.querySelector('[data-legal-close]');
   const cookieTemplate = document.querySelector('#cookie-settings-template');
+  const cookieNotice = document.querySelector('#cookie-notice');
   if (!dialog || !title || !body || !closeButton || !cookieTemplate) return;
 
-  const cookieKey = 'oktoberfest_cookie_choice_v1';
+  const noticeKey = 'oktoberfest_cookie_notice_seen_v1';
   let opener = null;
 
-  const getCookieChoice = () => {
-    try { return localStorage.getItem(cookieKey); } catch { return null; }
+  const noticeSeen = () => {
+    try { return localStorage.getItem(noticeKey) === '1'; } catch { return false; }
   };
-  const cookieLabel = choice => choice === 'analytics' ? 'аналитика разрешена' : choice === 'essential' ? 'только необходимые' : 'не выбрана';
-  const updateCookieStatus = () => {
-    const status = body.querySelector('[data-cookie-status]');
-    if (status) status.textContent = cookieLabel(getCookieChoice());
+  const hideCookieNotice = () => {
+    if (cookieNotice) cookieNotice.hidden = true;
+    document.body.classList.remove('cookie-notice-visible');
   };
+  if (cookieNotice && !noticeSeen()) {
+    cookieNotice.hidden = false;
+    document.body.classList.add('cookie-notice-visible');
+  }
   const openDialog = trigger => {
     opener = trigger;
     if (!dialog.open) dialog.showModal();
     document.documentElement.classList.add('legal-open');
     closeButton.focus({ preventScroll: true });
   };
-  const openCookieSettings = trigger => {
-    title.textContent = 'Настройки cookie';
+  const openCookieInfo = trigger => {
+    title.textContent = 'О cookie';
     body.replaceChildren(cookieTemplate.content.cloneNode(true));
-    updateCookieStatus();
     openDialog(trigger);
   };
   const openDocument = trigger => {
@@ -70,7 +73,13 @@
     const cookieTrigger = event.target.closest('[data-legal-cookie]');
     if (cookieTrigger) {
       event.preventDefault();
-      openCookieSettings(cookieTrigger);
+      openCookieInfo(cookieTrigger);
+      return;
+    }
+    const dismissButton = event.target.closest('[data-cookie-dismiss]');
+    if (dismissButton && cookieNotice?.contains(dismissButton)) {
+      try { localStorage.setItem(noticeKey, '1'); } catch {}
+      hideCookieNotice();
       return;
     }
     const legalTrigger = event.target.closest('[data-legal-url]');
@@ -78,14 +87,6 @@
       event.preventDefault();
       openDocument(legalTrigger);
       return;
-    }
-    const choiceButton = event.target.closest('[data-cookie-choice]');
-    if (choiceButton && dialog.contains(choiceButton)) {
-      const choice = choiceButton.dataset.cookieChoice;
-      try { localStorage.setItem(cookieKey, choice); } catch {}
-      document.documentElement.dataset.cookieChoice = choice;
-      updateCookieStatus();
-      document.dispatchEvent(new CustomEvent('cookie-choice', { detail: { choice } }));
     }
   });
   closeButton.addEventListener('click', closeDialog);
@@ -98,6 +99,4 @@
     if (opener?.isConnected) opener.focus({ preventScroll: true });
     opener = null;
   });
-  const storedChoice = getCookieChoice();
-  if (storedChoice) document.documentElement.dataset.cookieChoice = storedChoice;
 })();

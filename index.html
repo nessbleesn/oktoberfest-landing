@@ -12,7 +12,7 @@
   <link rel="preload" href="assets/fonts/pt-root-ui_regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/BebasNeue-Bold.otf" as="font" type="font/otf" crossorigin>
   <link rel="preload" href="assets/hero-v5-900.avif" imagesrcset="assets/hero-v5-520.avif 520w, assets/hero-v5-900.avif 900w, assets/hero-v5-1100.avif 1100w" imagesizes="(max-width: 700px) 100vw, 48vw" as="image" type="image/avif" fetchpriority="high">
-  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=3" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=1" defer></script><script src="analytics.js?v=1" defer></script>
+  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><link rel="stylesheet" href="cookie-notice.css?v=1"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=3" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=2" defer></script><script src="analytics.js?v=2" defer></script>
 </head>
 <body class="visual-first">
 <a class="skip" href="#main">К содержимому</a>
@@ -138,13 +138,20 @@
     <p class="legal-footer__meta">© 2026 · <a href="https://parkskazka.ru/">parkskazka.ru</a></p>
     <p class="legal-footer__operator">ООО «Парк Сказка» · ИНН 7743185160 · ОГРН 5167746421519</p>
     <nav class="legal-footer__links" aria-label="Юридическая информация">
-      <button type="button" data-legal-cookie>Настройки cookie</button>
+      <button type="button" data-legal-cookie>О cookie</button>
       <a href="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-url="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-title="Политика конфиденциальности">Политика конфиденциальности</a>
       <a href="https://parkskazka.ru/o-parke/dokumenty/soglasie-na-obrabotku-personalnyh-dannyh" data-legal-url="https://parkskazka.ru/o-parke/dokumenty/soglasie-na-obrabotku-personalnyh-dannyh" data-legal-title="Согласие на обработку персональных данных">Согласие на обработку ПДн</a>
     </nav>
     <p class="legal-footer__notice">В настоящих материалах использовано изображение хлебного кваса</p>
   </div>
 </footer>
+<aside id="cookie-notice" class="cookie-notice" aria-label="Уведомление о cookie" hidden>
+  <div class="cookie-notice__copy">
+    <strong>О cookie на сайте</strong>
+    <p>Cookie и пиксели Яндекс Метрики и VK помогают считать посещения и рекламу. Подробнее — в <a href="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-url="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" data-legal-title="Политика конфиденциальности">политике конфиденциальности</a>.</p>
+  </div>
+  <button type="button" class="cookie-notice__close" data-cookie-dismiss aria-label="Закрыть уведомление о cookie"><span class="cookie-notice__close-text">Понятно</span><span class="cookie-notice__close-icon" aria-hidden="true">×</span></button>
+</aside>
 <dialog id="legal-dialog" class="legal-dialog" aria-labelledby="legal-dialog-title">
   <div class="legal-dialog__panel">
     <header class="legal-dialog__header">
@@ -156,11 +163,9 @@
 </dialog>
 <template id="cookie-settings-template">
   <article class="cookie-settings">
-    <p>Необходимые технологии поддерживают работу страницы. Аналитические cookie могут использоваться только после вашего разрешения.</p>
-    <div class="cookie-settings__group"><strong>Необходимые cookie</strong><span>Всегда включены</span><p>Нужны для сохранения настроек страницы и корректной работы формы.</p></div>
-    <div class="cookie-settings__group"><strong>Аналитические cookie</strong><span>По вашему выбору</span><p>Помогают оценивать посещаемость и улучшать страницу. Без разрешения аналитика не должна загружаться.</p></div>
-    <p class="cookie-settings__status">Текущая настройка: <strong data-cookie-status>не выбрана</strong></p>
-    <div class="cookie-settings__actions"><button type="button" data-cookie-choice="essential">Только необходимые</button><button type="button" class="is-primary" data-cookie-choice="analytics">Разрешить аналитику</button></div>
+    <p>На этой странице используются cookie и сервисы Яндекс Метрика и VK Пиксель. Они загружаются при открытии страницы для статистики посещений и оценки рекламы.</p>
+    <div class="cookie-settings__group"><strong>Необходимые cookie</strong><span>Для работы сайта</span><p>Нужны для сохранения настроек страницы и корректной работы формы.</p></div>
+    <div class="cookie-settings__group"><strong>Аналитические и рекламные cookie</strong><span>Используются на странице</span><p>Помогают измерять посещения, действия на странице и эффективность рекламы. Счётчики загружаются при открытии страницы.</p></div>
     <p class="cookie-settings__source">Подробнее в <a href="https://parkskazka.ru/o-parke/dokumenty/politika-konfidentsialnosti" target="_blank" rel="noopener">политике конфиденциальности</a>.</p>
   </article>
 </template>

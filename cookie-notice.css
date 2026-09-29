@@ -1,0 +1,68 @@
+.cookie-notice[hidden] { display: none; }
+
+.cookie-notice {
+  position: fixed;
+  z-index: 48;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  width: min(720px, calc(100% - 32px));
+  max-height: min(65vh, 360px);
+  overflow: auto;
+  padding: 19px 20px;
+  border: 1px solid #d8c181;
+  border-radius: 18px;
+  background: #fffaf0;
+  color: #173d32;
+  box-shadow: 0 14px 45px rgba(11, 47, 39, .23);
+  font: 14px/1.5 'PT Root UI', Onest, Arial, sans-serif;
+}
+
+.cookie-notice__copy strong { display: block; margin-bottom: 3px; font-size: 15px; }
+.cookie-notice__copy p { margin: 0; }
+.cookie-notice__copy a { text-decoration: underline; text-underline-offset: 3px; }
+.cookie-notice__close {
+  min-width: 110px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #173d32;
+  color: #fffaf0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cookie-notice__close:hover { background: #236452; }
+.cookie-notice__close-icon { display: none; }
+.cookie-notice :is(a, button):focus-visible { outline: 3px solid #d59d25; outline-offset: 3px; }
+
+@media (max-width: 700px) {
+  .cookie-notice {
+    left: max(10px, env(safe-area-inset-left, 0px));
+    right: max(10px, env(safe-area-inset-right, 0px));
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    width: auto;
+    display: block;
+    padding: 11px 14px 14px;
+    border-radius: 15px;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+  .cookie-notice__copy strong { display: flex; min-height: 44px; align-items: center; padding-right: 48px; font-size: 14px; }
+  .cookie-notice__close { position: absolute; top: 11px; right: 12px; min-width: 44px; width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+  .cookie-notice__close-text { display: none; }
+  .cookie-notice__close-icon { display: block; font: 27px/1 Arial, sans-serif; }
+  body.cookie-notice-visible .coupon-float { visibility: hidden; pointer-events: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cookie-notice:not([hidden]) { animation: cookie-notice-in .28s ease-out both; }
+  @keyframes cookie-notice-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}

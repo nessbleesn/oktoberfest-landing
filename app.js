@@ -44,7 +44,7 @@ if(experienceRail&&experienceCards.length>1&&experiencePrev&&experienceNext&&exp
   window.addEventListener('resize',scheduleExperience);
   updateExperience();
 }
-// Analytics is intentionally not installed in a private preview; events can be connected at release.
+// Dispatch site events to the analytics module without exposing form data.
 function track(name,params={}){window.dispatchEvent(new CustomEvent('festival:analytics',{detail:{name,...params}}));}
 document.querySelectorAll('[data-event]').forEach(a=>a.addEventListener('click',()=>track(a.dataset.event)));
 
