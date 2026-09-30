@@ -4,6 +4,7 @@
   const form=document.getElementById('discount-form');
   if(!dialog||!form||typeof dialog.showModal!=='function')return;
   const status=document.getElementById('discount-status');
+  form.elements['personal-consent'].addEventListener('click',event=>event.preventDefault());
   const openers=[...document.querySelectorAll('[data-discount-open]')];
   let opener=null;
   let pending=false;
@@ -65,8 +66,8 @@
         throw failure;
       }
       status.textContent=result.delivery_pending
-        ?`Ваш промокод ${result.promo_code}. Сохраните его: отправка письма пока задерживается.`
-        :`Ваш промокод ${result.promo_code}. Сохраните его.`;
+        ?'Спасибо! Заявка принята. Отправка письма задерживается — промокод придёт на указанную почту позже'
+        :'Спасибо! Заявка принята. Промокод отправлен на указанную почту';
       track('discount_subscribe_success');
       if(result.bitrix_success===true&&result.bitrix_new_lead===true){
         window.dispatchEvent(new CustomEvent('festival:bitrix-lead-confirmed',{
@@ -80,6 +81,8 @@
           ?'Слишком много попыток. Попробуйте позже.'
           :error.message==='contact_conflict'
             ?'Почта и телефон относятся к разным заявкам. Позвоните в парк для проверки.'
+            :error.message==='duplicate_email'
+              ?'Для этого адреса электронной почты купон уже был оформлен'
             :'Не удалось отправить заявку. Попробуйте позже.';
       track('discount_subscribe_error');
     }finally{

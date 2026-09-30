@@ -46,7 +46,7 @@ function csrf(string $html): string {
 }
 
 try {
-    $payload = ['email' => 'http@example.test', 'phone' => '+7 999 888 77 66', 'name' => 'HTTP test', 'personal_consent' => true];
+    $payload = ['email' => 'http@example.test', 'phone' => '+7 999 888 77 66', 'name' => 'HTTP test', 'personal_consent' => true, 'marketing_consent' => false];
     $first = null;
     for ($i = 0; $i < 20; $i++) {
         $first = request($port, $payload);
@@ -54,13 +54,17 @@ try {
         usleep(100000);
     }
     if ($first[0] !== 200 || ($first[1]['promo_code'] ?? '') !== 'EDA1' || ($first[1]['delivery_pending'] ?? false) !== true || ($first[1]['bitrix_success'] ?? null) !== false) throw new RuntimeException('HTTP first code failed');
-    $again = request($port, $payload);
-    if ($again[0] !== 200 || ($again[1]['promo_code'] ?? '') !== 'EDA1') throw new RuntimeException('HTTP idempotency failed');
+    $snapshotDb = new PDO('sqlite:' . $database);
+    $before = $snapshotDb->query('SELECT COUNT(*) AS n, MAX(sync_attempts) AS attempts FROM oktoberfest_promos')->fetch(PDO::FETCH_ASSOC);
+    $again = request($port, array_merge($payload, ['email' => '  HTTP@EXAMPLE.TEST  ']));
+    if ($again[0] !== 409 || ($again[1]['error'] ?? '') !== 'duplicate_email' || isset($again[1]['promo_code'])) throw new RuntimeException('HTTP duplicate email was not blocked');
+    $after = $snapshotDb->query('SELECT COUNT(*) AS n, MAX(sync_attempts) AS attempts FROM oktoberfest_promos')->fetch(PDO::FETCH_ASSOC);
+    if ($before !== $after || (int)$snapshotDb->query('SELECT last_sequence FROM oktoberfest_campaign_counters')->fetchColumn() !== 1) throw new RuntimeException('HTTP duplicate changed registration or sync state');
     $invalid = request($port, $payload + ['promo_code' => 'EDA999']);
     if ($invalid[0] !== 400) throw new RuntimeException('Client code was accepted');
     $honeypot = request($port, $payload + ['company' => 'bot']);
     if ($honeypot[0] !== 400) throw new RuntimeException('Honeypot was accepted');
-    echo "PASS HTTP EDA1, duplicate EDA1, client code rejected\n";
+    echo "PASS HTTP EDA1, duplicate email rejected without resync, client code rejected\n";
     $loginPage = cashierRequest($port, $cookie);
     if (!str_contains($loginPage, 'Пароль кассира') || str_contains($loginPage, 'Владелец')) throw new RuntimeException('cashier exposed private data');
     $authorized = cashierRequest($port, $cookie, ['csrf' => csrf($loginPage), 'action' => 'login', 'password' => 'test-password']);

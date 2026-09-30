@@ -40,6 +40,8 @@ try {
     ]);
 } catch (PromoInputError $error) {
     promo_reply(422, ['success' => false, 'error' => $error->getMessage()]);
+} catch (PromoDuplicateEmail $error) {
+    promo_reply(409, ['success' => false, 'error' => 'duplicate_email']);
 } catch (PromoIdentityConflict $error) {
     promo_reply(409, ['success' => false, 'error' => 'contact_conflict']);
 } catch (Throwable $error) {

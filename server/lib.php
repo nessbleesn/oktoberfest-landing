@@ -5,6 +5,7 @@ const PROMO_CAMPAIGN = 'oktoberfest';
 
 final class PromoInputError extends RuntimeException {}
 final class PromoIdentityConflict extends RuntimeException {}
+final class PromoDuplicateEmail extends RuntimeException {}
 
 function promo_db(): PDO {
     $dsn = getenv('OKTOBERFEST_DB_DSN');
@@ -74,6 +75,11 @@ final class PromoStore {
                 $lock->execute([PROMO_CAMPAIGN]);
                 if ($lock->fetchColumn() === false) throw new RuntimeException('Campaign counter is not initialized');
 
+                // The campaign lock serializes concurrent submissions before the unique-email check.
+                $byEmail = $this->db->prepare('SELECT id FROM oktoberfest_promos WHERE campaign_key=? AND email_normalized=?' . ($driver === 'mysql' ? ' FOR UPDATE' : ''));
+                $byEmail->execute([PROMO_CAMPAIGN, $email]);
+                if ($byEmail->fetchColumn() !== false) throw new PromoDuplicateEmail('Email already registered');
+
                 $find = $this->db->prepare('SELECT * FROM oktoberfest_promos WHERE campaign_key = :campaign AND (email_normalized = :email OR (:phone IS NOT NULL AND phone_normalized = :phone_match))' . ($driver === 'mysql' ? ' FOR UPDATE' : ''));
                 $find->execute(['campaign' => PROMO_CAMPAIGN, 'email' => $email, 'phone' => $phone, 'phone_match' => $phone]);
                 $matches = $find->fetchAll();
@@ -103,13 +109,14 @@ final class PromoStore {
                 $seq = (int)$this->db->query("SELECT last_sequence FROM oktoberfest_campaign_counters WHERE campaign_key = 'oktoberfest'")->fetchColumn();
                 $code = 'EDA' . $seq;
                 $id = bin2hex(random_bytes(16));
-                $insert = $this->db->prepare("INSERT INTO oktoberfest_promos (campaign_key, sequence_number, promo_code, name, email, email_normalized, phone, phone_normalized, application_id, idempotency_key, marketing_consent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $insert->execute([PROMO_CAMPAIGN, $seq, $code, $name, $email, $email, $phone, $phone, $id, $key, $marketing]);
+                $consentAt = gmdate('Y-m-d H:i:s');
+                $insert = $this->db->prepare("INSERT INTO oktoberfest_promos (campaign_key, sequence_number, promo_code, name, email, email_normalized, phone, phone_normalized, application_id, idempotency_key, personal_consent, personal_consented_at, marketing_consent, marketing_choice_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $insert->execute([PROMO_CAMPAIGN, $seq, $code, $name, $email, $email, $phone, $phone, $id, $key, 1, $consentAt, $marketing, $consentAt]);
                 $promoId = (int)$this->db->lastInsertId();
                 if ($driver === 'sqlite') $this->db->exec('COMMIT');
                 else $this->db->commit();
                 $transactionOpen = false;
-                return ['id' => $promoId, 'campaign_key' => PROMO_CAMPAIGN, 'sequence_number' => $seq, 'promo_code' => $code, 'name' => $name, 'email' => $email, 'phone' => $phone, 'phone_normalized' => $phone, 'application_id' => $id, 'marketing_consent' => $marketing, 'sync_status' => 'pending', 'sync_version' => 0, 'bitrix_status' => 'pending'];
+                return ['id' => $promoId, 'campaign_key' => PROMO_CAMPAIGN, 'sequence_number' => $seq, 'promo_code' => $code, 'name' => $name, 'email' => $email, 'phone' => $phone, 'phone_normalized' => $phone, 'application_id' => $id, 'personal_consent' => 1, 'personal_consented_at' => $consentAt, 'marketing_consent' => $marketing, 'marketing_choice_at' => $consentAt, 'sync_status' => 'pending', 'sync_version' => 0, 'bitrix_status' => 'pending'];
             } catch (Throwable $error) {
                 if ($transactionOpen) {
                     if ($driver === 'sqlite') $this->db->exec('ROLLBACK');
@@ -148,7 +155,7 @@ final class PromoStore {
     }
 
     public function pending(int $limit = 50): array {
-        $q = $this->db->prepare("SELECT id,email,phone,name,promo_code,marketing_consent,sync_version FROM oktoberfest_promos WHERE sync_status='pending' ORDER BY id LIMIT ?");
+        $q = $this->db->prepare("SELECT id,email,phone,name,promo_code,personal_consent,personal_consented_at,marketing_consent,marketing_choice_at,sync_version FROM oktoberfest_promos WHERE sync_status='pending' ORDER BY id LIMIT ?");
         $q->bindValue(1, $limit, PDO::PARAM_INT);
         $q->execute();
         return $q->fetchAll();
@@ -172,7 +179,7 @@ final class PromoStore {
     public function pendingBitrix(int $limit = 50): array {
         $stale = $this->db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql'
             ? 'CURRENT_TIMESTAMP - INTERVAL 10 MINUTE' : "datetime('now', '-10 minutes')";
-        $q = $this->db->prepare("SELECT id,name,email,phone,promo_code,application_id,bitrix_status FROM oktoberfest_promos WHERE campaign_key=? AND (bitrix_status='pending' OR (bitrix_status='sending' AND bitrix_claimed_at < {$stale})) ORDER BY id LIMIT ?");
+        $q = $this->db->prepare("SELECT id,name,email,phone,promo_code,application_id,personal_consent,personal_consented_at,marketing_consent,marketing_choice_at,bitrix_status FROM oktoberfest_promos WHERE campaign_key=? AND (bitrix_status='pending' OR (bitrix_status='sending' AND bitrix_claimed_at < {$stale})) ORDER BY id LIMIT ?");
         $q->bindValue(1, PROMO_CAMPAIGN);
         $q->bindValue(2, $limit, PDO::PARAM_INT);
         $q->execute();
@@ -184,7 +191,11 @@ interface PromoContactClient { public function sync(array $promo): bool; }
 
 final class UniSenderClient implements PromoContactClient {
     public static function contactFields(array $promo): array {
-        $fields = ['email' => $promo['email'], 'Name' => $promo['name'], 'promo_code' => $promo['promo_code']];
+        $fields = [
+            'email' => $promo['email'], 'Name' => $promo['name'], 'promo_code' => $promo['promo_code'],
+            'consent' => !empty($promo['personal_consent']) ? 'Да' : 'Нет',
+            'sogl' => !empty($promo['marketing_consent']) ? 'Да' : 'Нет'
+        ];
         if (!empty($promo['phone'])) $fields['phone'] = $promo['phone'];
         return $fields;
     }
@@ -195,6 +206,8 @@ final class UniSenderClient implements PromoContactClient {
 
     public static function importFields(array $promo): array {
         $fields = self::contactFields($promo);
+        $tags = self::contactTags($promo);
+        if ($tags !== '') $fields['tags'] = $tags;
         return [
             'field_names' => array_keys($fields),
             'data' => [array_values($fields)],
@@ -238,7 +251,6 @@ final class UniSenderClient implements PromoContactClient {
             'api_key' => $key,
             'list_ids' => $list,
             'fields' => self::contactFields($promo),
-            'tags' => self::contactTags($promo),
             'double_optin' => 3,
             'overwrite' => 2
         ]);
@@ -318,8 +330,21 @@ final class BitrixLeadClient implements PromoLeadClient {
             'EMAIL' => [['VALUE' => $promo['email'], 'VALUE_TYPE' => 'WORK']],
             'COMMENTS' => 'Промокод: ' . $promo['promo_code'] . '; скидка 10% на еду.'
         ];
+        $fields['UF_CRM_PERSONALDATA_APPROVED'] = !empty($promo['personal_consent']) ? 1 : 0;
+        $fields['UF_CRM_SUBSCRIPTION_APPROVED'] = !empty($promo['marketing_consent']) ? 1 : 0;
+        $personalAtField = self::consentField('BITRIX24_PERSONAL_CONSENT_AT_FIELD', false);
+        $marketingAtField = self::consentField('BITRIX24_MARKETING_CHOICE_AT_FIELD', false);
+        if ($personalAtField !== '' && !empty($promo['personal_consented_at'])) $fields[$personalAtField] = $promo['personal_consented_at'] . ' UTC';
+        if ($marketingAtField !== '' && !empty($promo['marketing_choice_at'])) $fields[$marketingAtField] = $promo['marketing_choice_at'] . ' UTC';
         if (!empty($promo['phone'])) $fields['PHONE'] = [['VALUE' => $promo['phone'], 'VALUE_TYPE' => 'WORK']];
         return $fields;
+    }
+
+    private static function consentField(string $variable, bool $required = true): string {
+        $field = getenv($variable) ?: '';
+        if ($field === '' && !$required) return '';
+        if (!preg_match('/\AUF_CRM_[A-Z0-9_]+\z/', $field)) throw new RuntimeException('Bitrix24 consent field is not configured');
+        return $field;
     }
 
     public function create(array $promo): ?int {
