@@ -61,7 +61,7 @@
     align-items: flex-start;
     width: min(100%, 1536px);
     margin: 0 auto;
-    padding: 32px max(var(--vf-gutter), calc((100vw - 1536px) / 2 + var(--vf-gutter)));
+    padding: 32px var(--vf-gutter);
     color: #fff9ed;
   }
 
