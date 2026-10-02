@@ -2,6 +2,7 @@
 
 import json
 import os
+from urllib.parse import urlencode
 from playwright.sync_api import sync_playwright
 
 
@@ -11,7 +12,7 @@ PENDING = "Спасибо! Заявка принята. Отправка пис�
 DUPLICATE = "Для этого адреса электронной почты купон уже был оформлен"
 
 
-def scenario(browser, marketing, duplicate=False, pending=False, width=390):
+def scenario(browser, marketing, duplicate=False, pending=False, width=390, utm=None):
     context = browser.new_context(viewport={"width": width, "height": 844 if width < 700 else 900})
     page = context.new_page()
     requests = []
@@ -26,7 +27,8 @@ def scenario(browser, marketing, duplicate=False, pending=False, width=390):
             route.fulfill(status=200, content_type="application/json", body=json.dumps({"success": True, "promo_code": "EDA42", "delivery_pending": pending, "bitrix_success": True, "bitrix_new_lead": True}))
 
     page.route("**/oktoberfest-api/promo", promo)
-    page.goto(BASE_URL, wait_until="networkidle")
+    url = BASE_URL + (("&" if "?" in BASE_URL else "?") + urlencode(utm) if utm else "")
+    page.goto(url, wait_until="networkidle")
     notice = page.locator("[data-cookie-dismiss]")
     if notice.is_visible():
         notice.click()
@@ -50,6 +52,11 @@ def scenario(browser, marketing, duplicate=False, pending=False, width=390):
     assert len(requests) == 1
     assert requests[0]["personal_consent"] is True
     assert requests[0]["marketing_consent"] is marketing
+    for field in ("utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"):
+        if utm:
+            assert requests[0][field] == utm[field]
+        else:
+            assert field not in requests[0]
     assert "EDA42" not in page.locator("#discount-dialog").inner_text()
     screenshots = os.getenv("OKTOBERFEST_SCREENSHOT_DIR")
     if screenshots and marketing and not duplicate:
@@ -65,5 +72,9 @@ with sync_playwright() as playwright:
             scenario(browser, marketing=False, width=width)
             scenario(browser, marketing=False, duplicate=True, width=width)
         scenario(browser, marketing=False, pending=True, width=390)
-        print(f"PASS {engine.name}: 320/390/1440, consent on/off, success/pending/duplicate, no visible code")
+        scenario(browser, marketing=False, width=390, utm={
+            "utm_source": "yandex", "utm_medium": "cpc", "utm_campaign": "oktoberfest_2026",
+            "utm_content": "hero", "utm_term": "осенний парк"
+        })
+        print(f"PASS {engine.name}: 320/390/1440, consent on/off, success/pending/duplicate, five UTM fields, no visible code")
         browser.close()

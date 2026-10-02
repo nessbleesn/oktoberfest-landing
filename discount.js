@@ -4,6 +4,8 @@
   const form=document.getElementById('discount-form');
   if(!dialog||!form||typeof dialog.showModal!=='function')return;
   const status=document.getElementById('discount-status');
+  const landingParams=new URLSearchParams(window.location.search);
+  const utmFields=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   form.elements['personal-consent'].addEventListener('click',event=>event.preventDefault());
   const openers=[...document.querySelectorAll('[data-discount-open]')];
   let opener=null;
@@ -48,6 +50,10 @@
       personal_consent:form.elements['personal-consent'].checked,
       marketing_consent:form.elements['marketing-consent'].checked
     };
+    utmFields.forEach(field=>{
+      const value=landingParams.get(field);
+      if(value!==null&&value.trim()!=='')payload[field]=value.trim();
+    });
     if(submissionKey)payload.idempotency_key=submissionKey;
     try{
       const response=await fetch(form.action,{

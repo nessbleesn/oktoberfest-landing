@@ -8,6 +8,7 @@ CREATE TABLE oktoberfest_promos (
   used_at TEXT, application_id TEXT NOT NULL UNIQUE, idempotency_key TEXT,
   personal_consent INTEGER NOT NULL DEFAULT 1, personal_consented_at TEXT,
   marketing_consent INTEGER NOT NULL DEFAULT 0, marketing_choice_at TEXT,
+  utm_source TEXT, utm_medium TEXT, utm_campaign TEXT, utm_content TEXT, utm_term TEXT,
   sync_status TEXT NOT NULL DEFAULT 'pending',
   sync_version INTEGER NOT NULL DEFAULT 0,
   sync_attempts INTEGER NOT NULL DEFAULT 0, last_sync_attempt_at TEXT, synced_at TEXT,

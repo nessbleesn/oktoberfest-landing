@@ -9,8 +9,8 @@ function testDb(string $dsn = 'sqlite::memory:'): PDO {
     if ($dsn === 'sqlite::memory:') $db->exec(file_get_contents(dirname(__DIR__) . '/schema.sqlite.sql'));
     return $db;
 }
-function submit(PromoStore $store, int $n, ?string $phone = null): array {
-    return $store->issue(['name' => 'Тест ' . $n, 'email' => "person{$n}@example.test", 'phone' => $phone ?? '', 'personal_consent' => true]);
+function submit(PromoStore $store, int $n, ?string $phone = null, array $extra = []): array {
+    return $store->issue(['name' => 'Тест ' . $n, 'email' => "person{$n}@example.test", 'phone' => $phone ?? '', 'personal_consent' => true] + $extra);
 }
 final class FakeClient implements PromoContactClient {
     public array $fields = [];
@@ -38,7 +38,10 @@ try {
     $db = testDb(); $store = new PromoStore($db);
     $issued = [];
     for ($i = 1; $i <= 7; $i++) {
-        $promo = submit($store, $i, $i === 7 ? '+7 (999) 000-00-07' : null);
+        $promo = submit($store, $i, $i === 7 ? '+7 (999) 000-00-07' : null, $i === 7 ? [
+            'utm_source' => ' yandex ', 'utm_medium' => 'cpc', 'utm_campaign' => 'oktoberfest_2026',
+            'utm_content' => 'hero', 'utm_term' => 'осенний парк'
+        ] : []);
         $issued[$i] = $promo;
         if (in_array($i, [1, 5, 7], true)) { check($promo['promo_code'] === 'EDA' . $i, "sequence {$i}"); $checks++; }
     }
@@ -49,6 +52,12 @@ try {
     $samePhone = $store->issue(['email' => 'other@example.test', 'phone' => '8 999 000 00 07', 'personal_consent' => true]);
     check($samePhone['promo_code'] === 'EDA7', 'repeat phone'); $checks++;
     check((int)$db->query("SELECT last_sequence FROM oktoberfest_campaign_counters WHERE campaign_key='oktoberfest'")->fetchColumn() === 7, 'duplicate changed counter'); $checks++;
+    $storedUtm = $db->query('SELECT utm_source,utm_medium,utm_campaign,utm_content,utm_term FROM oktoberfest_promos WHERE sequence_number=7')->fetch();
+    check($storedUtm === ['utm_source' => 'yandex', 'utm_medium' => 'cpc', 'utm_campaign' => 'oktoberfest_2026', 'utm_content' => 'hero', 'utm_term' => 'осенний парк'], 'all five UTM fields stored'); $checks++;
+    foreach ([['utm_source' => ['invalid']], ['utm_medium' => str_repeat('x', 256)], ['utm_term' => "bad\nvalue"]] as $badUtm) {
+        try { submit($store, 99, null, $badUtm); throw new RuntimeException('invalid UTM accepted'); }
+        catch (PromoInputError $error) { $checks++; }
+    }
     $storedConsent = $db->query('SELECT personal_consent,personal_consented_at,marketing_consent,marketing_choice_at FROM oktoberfest_promos WHERE sequence_number=7')->fetch();
     check((int)$storedConsent['personal_consent'] === 1 && (int)$storedConsent['marketing_consent'] === 0 && $storedConsent['personal_consented_at'] !== null && $storedConsent['marketing_choice_at'] !== null, 'opt-out and both decision times stored'); $checks++;
     $consentDb = testDb(); $consentStore = new PromoStore($consentDb);
@@ -77,6 +86,10 @@ try {
     putenv('BITRIX24_MARKETING_CHOICE_AT_FIELD=UF_CRM_TEST_MARKETING_AT');
     $leadFields = BitrixLeadClient::leadFields($promo);
     check(($leadFields['ORIGIN_ID'] ?? '') === $promo['application_id'] && str_contains($leadFields['COMMENTS'] ?? '', 'EDA7'), 'Bitrix lead fields'); $checks++;
+    check(($leadFields['UTM_SOURCE'] ?? null) === 'yandex' && ($leadFields['UTM_MEDIUM'] ?? null) === 'cpc' && ($leadFields['UTM_CAMPAIGN'] ?? null) === 'oktoberfest_2026' && ($leadFields['UTM_CONTENT'] ?? null) === 'hero' && ($leadFields['UTM_TERM'] ?? null) === 'осенний парк', 'Bitrix receives all standard UTM fields'); $checks++;
+    check(!isset(BitrixLeadClient::leadFields($issued[1])['UTM_SOURCE']), 'unattributed lead stays without UTM'); $checks++;
+    $retryUtm = array_values(array_filter($store->pendingBitrix(), static fn(array $row): bool => (int)$row['id'] === (int)$promo['id']))[0] ?? null;
+    check($retryUtm !== null && ($retryUtm['utm_source'] ?? null) === 'yandex' && ($retryUtm['utm_term'] ?? null) === 'осенний парк', 'Bitrix retry retains UTM'); $checks++;
     check($leadFields['UF_CRM_PERSONALDATA_APPROVED'] === 1 && $leadFields['UF_CRM_SUBSCRIPTION_APPROVED'] === 0, 'Bitrix separate boolean consent fields'); $checks++;
     $optedInLeadFields = BitrixLeadClient::leadFields($optedIn);
     check($optedInLeadFields['UF_CRM_PERSONALDATA_APPROVED'] === 1 && $optedInLeadFields['UF_CRM_SUBSCRIPTION_APPROVED'] === 1, 'Bitrix explicit advertising opt-in'); $checks++;

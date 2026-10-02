@@ -46,7 +46,8 @@ function csrf(string $html): string {
 }
 
 try {
-    $payload = ['email' => 'http@example.test', 'phone' => '+7 999 888 77 66', 'name' => 'HTTP test', 'personal_consent' => true, 'marketing_consent' => false];
+    $payload = ['email' => 'http@example.test', 'phone' => '+7 999 888 77 66', 'name' => 'HTTP test', 'personal_consent' => true, 'marketing_consent' => false,
+        'utm_source' => 'vk', 'utm_medium' => 'cpc', 'utm_campaign' => 'oktoberfest_2026', 'utm_content' => 'button', 'utm_term' => 'еда'];
     $first = null;
     for ($i = 0; $i < 20; $i++) {
         $first = request($port, $payload);
@@ -55,6 +56,8 @@ try {
     }
     if ($first[0] !== 200 || ($first[1]['promo_code'] ?? '') !== 'EDA1' || ($first[1]['delivery_pending'] ?? false) !== true || ($first[1]['bitrix_success'] ?? null) !== false) throw new RuntimeException('HTTP first code failed');
     $snapshotDb = new PDO('sqlite:' . $database);
+    $storedUtm = $snapshotDb->query('SELECT utm_source,utm_medium,utm_campaign,utm_content,utm_term FROM oktoberfest_promos')->fetch(PDO::FETCH_ASSOC);
+    if ($storedUtm !== ['utm_source' => 'vk', 'utm_medium' => 'cpc', 'utm_campaign' => 'oktoberfest_2026', 'utm_content' => 'button', 'utm_term' => 'еда']) throw new RuntimeException('HTTP UTM fields not stored');
     $before = $snapshotDb->query('SELECT COUNT(*) AS n, MAX(sync_attempts) AS attempts FROM oktoberfest_promos')->fetch(PDO::FETCH_ASSOC);
     $again = request($port, array_merge($payload, ['email' => '  HTTP@EXAMPLE.TEST  ']));
     if ($again[0] !== 409 || ($again[1]['error'] ?? '') !== 'duplicate_email' || isset($again[1]['promo_code'])) throw new RuntimeException('HTTP duplicate email was not blocked');

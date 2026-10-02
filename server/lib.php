@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 const PROMO_CAMPAIGN = 'oktoberfest';
+const PROMO_UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
 final class PromoInputError extends RuntimeException {}
 final class PromoIdentityConflict extends RuntimeException {}
@@ -49,6 +50,19 @@ function promo_name(string $value): string {
     return $name;
 }
 
+function promo_utm(array $input): array {
+    $utm = [];
+    foreach (PROMO_UTM_FIELDS as $field) {
+        $value = $input[$field] ?? null;
+        if ($value === null) { $utm[$field] = null; continue; }
+        if (!is_string($value)) throw new PromoInputError('Некорректные UTM-метки');
+        $value = trim($value);
+        if (mb_strlen($value) > 255 || preg_match('/[\x00-\x1F\x7F]/u', $value)) throw new PromoInputError('Некорректные UTM-метки');
+        $utm[$field] = $value !== '' ? $value : null;
+    }
+    return $utm;
+}
+
 final class PromoStore {
     public function __construct(private PDO $db) {}
 
@@ -60,6 +74,7 @@ final class PromoStore {
         $email = promo_email($input['email'] ?? '');
         $phone = promo_phone($input['phone'] ?? '');
         $name = promo_name($input['name'] ?? '');
+        $utm = promo_utm($input);
         if (($input['personal_consent'] ?? null) !== true) throw new PromoInputError('Требуется согласие на обработку данных');
         $marketing = ($input['marketing_consent'] ?? false) === true ? 1 : 0;
         $key = $input['idempotency_key'] ?? null;
@@ -110,13 +125,13 @@ final class PromoStore {
                 $code = 'EDA' . $seq;
                 $id = bin2hex(random_bytes(16));
                 $consentAt = gmdate('Y-m-d H:i:s');
-                $insert = $this->db->prepare("INSERT INTO oktoberfest_promos (campaign_key, sequence_number, promo_code, name, email, email_normalized, phone, phone_normalized, application_id, idempotency_key, personal_consent, personal_consented_at, marketing_consent, marketing_choice_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $insert->execute([PROMO_CAMPAIGN, $seq, $code, $name, $email, $email, $phone, $phone, $id, $key, 1, $consentAt, $marketing, $consentAt]);
+                $insert = $this->db->prepare("INSERT INTO oktoberfest_promos (campaign_key, sequence_number, promo_code, name, email, email_normalized, phone, phone_normalized, application_id, idempotency_key, personal_consent, personal_consented_at, marketing_consent, marketing_choice_at, utm_source, utm_medium, utm_campaign, utm_content, utm_term) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $insert->execute([PROMO_CAMPAIGN, $seq, $code, $name, $email, $email, $phone, $phone, $id, $key, 1, $consentAt, $marketing, $consentAt, ...array_values($utm)]);
                 $promoId = (int)$this->db->lastInsertId();
                 if ($driver === 'sqlite') $this->db->exec('COMMIT');
                 else $this->db->commit();
                 $transactionOpen = false;
-                return ['id' => $promoId, 'campaign_key' => PROMO_CAMPAIGN, 'sequence_number' => $seq, 'promo_code' => $code, 'name' => $name, 'email' => $email, 'phone' => $phone, 'phone_normalized' => $phone, 'application_id' => $id, 'personal_consent' => 1, 'personal_consented_at' => $consentAt, 'marketing_consent' => $marketing, 'marketing_choice_at' => $consentAt, 'sync_status' => 'pending', 'sync_version' => 0, 'bitrix_status' => 'pending'];
+                return ['id' => $promoId, 'campaign_key' => PROMO_CAMPAIGN, 'sequence_number' => $seq, 'promo_code' => $code, 'name' => $name, 'email' => $email, 'phone' => $phone, 'phone_normalized' => $phone, 'application_id' => $id, 'personal_consent' => 1, 'personal_consented_at' => $consentAt, 'marketing_consent' => $marketing, 'marketing_choice_at' => $consentAt, 'sync_status' => 'pending', 'sync_version' => 0, 'bitrix_status' => 'pending'] + $utm;
             } catch (Throwable $error) {
                 if ($transactionOpen) {
                     if ($driver === 'sqlite') $this->db->exec('ROLLBACK');
@@ -179,7 +194,7 @@ final class PromoStore {
     public function pendingBitrix(int $limit = 50): array {
         $stale = $this->db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql'
             ? 'CURRENT_TIMESTAMP - INTERVAL 10 MINUTE' : "datetime('now', '-10 minutes')";
-        $q = $this->db->prepare("SELECT id,name,email,phone,promo_code,application_id,personal_consent,personal_consented_at,marketing_consent,marketing_choice_at,bitrix_status FROM oktoberfest_promos WHERE campaign_key=? AND (bitrix_status='pending' OR (bitrix_status='sending' AND bitrix_claimed_at < {$stale})) ORDER BY id LIMIT ?");
+        $q = $this->db->prepare("SELECT id,name,email,phone,promo_code,application_id,personal_consent,personal_consented_at,marketing_consent,marketing_choice_at,utm_source,utm_medium,utm_campaign,utm_content,utm_term,bitrix_status FROM oktoberfest_promos WHERE campaign_key=? AND (bitrix_status='pending' OR (bitrix_status='sending' AND bitrix_claimed_at < {$stale})) ORDER BY id LIMIT ?");
         $q->bindValue(1, PROMO_CAMPAIGN);
         $q->bindValue(2, $limit, PDO::PARAM_INT);
         $q->execute();
@@ -337,6 +352,9 @@ final class BitrixLeadClient implements PromoLeadClient {
         if ($personalAtField !== '' && !empty($promo['personal_consented_at'])) $fields[$personalAtField] = $promo['personal_consented_at'] . ' UTC';
         if ($marketingAtField !== '' && !empty($promo['marketing_choice_at'])) $fields[$marketingAtField] = $promo['marketing_choice_at'] . ' UTC';
         if (!empty($promo['phone'])) $fields['PHONE'] = [['VALUE' => $promo['phone'], 'VALUE_TYPE' => 'WORK']];
+        foreach (PROMO_UTM_FIELDS as $field) {
+            if (isset($promo[$field]) && $promo[$field] !== '') $fields[strtoupper($field)] = $promo[$field];
+        }
         return $fields;
     }
 
