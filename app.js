@@ -22,6 +22,7 @@ const experienceNext=document.querySelector('[data-experience-next]');
 const experiencePosition=document.querySelector('.experience-position');
 if(experienceRail&&experienceCards.length>1&&experiencePrev&&experienceNext&&experiencePosition){
   document.documentElement.classList.add('experience-enhanced');
+  experienceRail.addEventListener('dragstart',event=>event.preventDefault());
   let experienceFrame=0;
   const cardOffset=card=>card.getBoundingClientRect().left-experienceRail.getBoundingClientRect().left+experienceRail.scrollLeft;
   const currentCard=()=>experienceCards.reduce((best,card,index)=>Math.abs(cardOffset(card)-experienceRail.scrollLeft)<Math.abs(cardOffset(experienceCards[best])-experienceRail.scrollLeft)?index:best,0);

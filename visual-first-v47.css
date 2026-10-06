@@ -242,6 +242,13 @@
   transition: transform .7s cubic-bezier(.16,1,.3,1), filter .4s ease;
 }
 
+.experience-card img,
+.experience-card a {
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .experience-card:first-child img { object-position: 58% center; }
 
 .experience-card::after {

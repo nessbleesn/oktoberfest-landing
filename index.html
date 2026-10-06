@@ -13,14 +13,22 @@
   <link rel="preload" href="assets/fonts/BebasNeue-Bold.otf" as="font" type="font/otf" crossorigin>
   <link rel="preload" href="assets/hero-v5-900.avif" imagesrcset="assets/hero-v5-520.avif 520w, assets/hero-v5-900.avif 900w, assets/hero-v5-1100.avif 1100w" imagesizes="100vw" as="image" type="image/avif" media="(max-width: 900px)" fetchpriority="high">
   <link rel="preload" href="assets/hero-editorial-v1.webp" as="image" type="image/webp" media="(min-width: 901px)" fetchpriority="high">
-  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=7"><link rel="stylesheet" href="desktop-hero-editorial.css?v=2" media="(min-width: 901px)"><link rel="stylesheet" href="hero-cta-v62.css?v=2"><link rel="stylesheet" href="cookie-notice.css?v=1"><link rel="stylesheet" href="route-card-v69.css?v=1"><script src="app.js?v=3.7" defer></script><script src="discount.js?v=5" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=2" defer></script><script src="analytics.js?v=2" defer></script>
+  <link rel="stylesheet" href="site-v19.min.css?v=13"><link rel="stylesheet" href="clean-poster-v33.css?v=11"><link rel="stylesheet" href="visual-first-v47.css?v=8"><link rel="stylesheet" href="desktop-hero-editorial.css?v=2" media="(min-width: 901px)"><link rel="stylesheet" href="hero-cta-v62.css?v=2"><link rel="stylesheet" href="cookie-notice.css?v=1"><link rel="stylesheet" href="route-card-v69.css?v=1"><script src="app.js?v=3.8" defer></script><script src="discount.js?v=5" defer></script><script src="sticky-coupon.js?v=3.5" defer></script><script src="legal.js?v=2" defer></script><script src="analytics.js?v=2" defer></script>
+  <!-- Calltracking.ru: dynamic phone number substitution -->
+  <script async type="text/javascript">
+    (function ct_load_script() {
+      var ct = document.createElement('script'); ct.type = 'text/javascript'; ct.async = true; ct.rel = 'preload';
+      ct.src = document.location.protocol + '//cc.calltracking.ru/phone.4d847.16824.async.js?nc=' + Math.floor(new Date().getTime() / 300000);
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ct, s);
+    })();
+  </script>
 </head>
 <body class="visual-first">
 <a class="skip" href="#main">К содержимому</a>
 <header class="site-header"><div class="header wrap">
   <a class="brand" href="https://parkskazka.ru/" aria-label="На главную страницу парка «Сказка»"><img src="assets/skazka-logo-173.png" srcset="assets/skazka-logo-173.png 1x, assets/skazka-logo-346.png 2x" width="150" height="44" alt="Сказка, парк развлечений"></a>
   <nav aria-label="Навигация"><a href="#experience">О фестивале</a><a href="#program">Программа</a><a href="#location">Как добраться</a></nav>
-  <a class="header-phone" href="tel:+74951336556" aria-label="Позвонить в парк Сказка: +7 495 133-65-56"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.8 9.5 8l-2 1.8c.9 2.1 2.6 3.8 4.7 4.7l1.8-2 4.2 2.3-.7 3.4c-.2.9-1 1.5-1.9 1.5C9.3 19.7 4.3 14.7 4.3 8.4c0-.9.6-1.7 1.5-1.9l1.4-2.7Z"/></svg><span>+7 (495) 133-65-56</span></a>
+  <a class="header-phone" href="tel:+74951336556"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 3.8 9.5 8l-2 1.8c.9 2.1 2.6 3.8 4.7 4.7l1.8-2 4.2 2.3-.7 3.4c-.2.9-1 1.5-1.9 1.5C9.3 19.7 4.3 14.7 4.3 8.4c0-.9.6-1.7 1.5-1.9l1.4-2.7Z"/></svg><span>+7 (495) 133-65-56</span></a>
 </div><span class="scroll-progress" aria-hidden="true"></span></header>
 <main id="main">
 <div class="hero-autumn">
@@ -67,20 +75,20 @@
   <div class="experience-controls" role="group" aria-label="Навигация по событиям фестиваля"><button type="button" data-experience-prev aria-controls="experience-rail" aria-label="Предыдущее событие">←</button><span class="experience-position" aria-live="polite">1 / 4</span><button type="button" data-experience-next aria-controls="experience-rail" aria-label="Следующее событие">→</button></div>
   <div class="experience-rail" id="experience-rail" aria-label="События фестиваля">
     <article class="experience-card">
-      <picture><img src="assets/food-v4.webp" width="1100" height="733" loading="lazy" decoding="async" alt="Фестивальный стол с грилем, брецелями и кружкой хлебного кваса"></picture>
-      <a href="#program"><span>Весь фестиваль</span><h3>Гриль и брецели</h3><p>Рулька, колбаски и кукуруза</p></a>
+      <picture><img src="assets/food-v4.webp" width="1100" height="733" loading="lazy" decoding="async" draggable="false" alt="Фестивальный стол с грилем, брецелями и кружкой хлебного кваса"></picture>
+      <a href="#program" draggable="false"><span>Весь фестиваль</span><h3>Гриль и брецели</h3><p>Рулька, колбаски и кукуруза</p></a>
     </article>
     <article class="experience-card">
-      <picture><source type="image/avif" srcset="assets/activity-pretzel-v1-520.avif 520w, assets/activity-pretzel-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/activity-pretzel-v1-520.webp 520w, assets/activity-pretzel-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/activity-pretzel-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" alt="Гостья фестиваля бросает брецель в мишень на фоне осеннего парка"></picture>
-      <a href="#program"><span>Суббота и воскресенье</span><h3>Игры в парке</h3><p>Метание брецеля и гонки с кружками</p></a>
+      <picture><source type="image/avif" srcset="assets/activity-pretzel-v1-520.avif 520w, assets/activity-pretzel-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/activity-pretzel-v1-520.webp 520w, assets/activity-pretzel-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/activity-pretzel-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" draggable="false" alt="Гостья фестиваля бросает брецель в мишень на фоне осеннего парка"></picture>
+      <a href="#program" draggable="false"><span>Суббота и воскресенье</span><h3>Игры в парке</h3><p>Метание брецеля и гонки с кружками</p></a>
     </article>
     <article class="experience-card">
-      <picture><source type="image/avif" srcset="assets/kids-craft-v1-520.avif 520w, assets/kids-craft-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/kids-craft-v1-520.webp 520w, assets/kids-craft-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/kids-craft-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" alt="Осенняя творческая мастерская для детей в парке"></picture>
-      <a href="#program"><span>11:00–14:00</span><h3>Детские мастерские</h3><p>Суббота и воскресенье</p></a>
+      <picture><source type="image/avif" srcset="assets/kids-craft-v1-520.avif 520w, assets/kids-craft-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/kids-craft-v1-520.webp 520w, assets/kids-craft-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/kids-craft-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" draggable="false" alt="Осенняя творческая мастерская для детей в парке"></picture>
+      <a href="#program" draggable="false"><span>11:00–14:00</span><h3>Детские мастерские</h3><p>Суббота и воскресенье</p></a>
     </article>
     <article class="experience-card">
-      <picture><source type="image/avif" srcset="assets/dj-evening-v1-520.avif 520w, assets/dj-evening-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/dj-evening-v1-520.webp 520w, assets/dj-evening-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/dj-evening-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" alt="Вечерний DJ-сет с гирляндами и колесом парка"></picture>
-      <a href="#program"><span>Суббота · 18:00–21:00</span><h3>DJ-сет</h3><p>Музыка под огнями парка</p></a>
+      <picture><source type="image/avif" srcset="assets/dj-evening-v1-520.avif 520w, assets/dj-evening-v1-900.avif 900w" sizes="(max-width: 760px) 82vw, 25vw"><source type="image/webp" srcset="assets/dj-evening-v1-520.webp 520w, assets/dj-evening-v1-900.webp 900w" sizes="(max-width: 760px) 82vw, 25vw"><img src="assets/dj-evening-v1-900.webp" width="900" height="1125" loading="lazy" decoding="async" draggable="false" alt="Вечерний DJ-сет с гирляндами и колесом парка"></picture>
+      <a href="#program" draggable="false"><span>Суббота · 18:00–21:00</span><h3>DJ-сет</h3><p>Музыка под огнями парка</p></a>
     </article>
   </div>
 </section>
@@ -95,7 +103,7 @@
     </div>
     <div class="day-panel" id="friday" data-panel="friday"><div class="day-intro"><p class="eyebrow">ПЯТНИЦА / 23 ОКТЯБРЯ</p><h3>Пятница</h3><p>Гастрономия и игровые станции.</p></div><div class="timeline"><article><time datetime="2026-10-23">16:00–22:00</time><div><h4>Интерактивы и гастрономия</h4><p>Игровые станции и фестивальное меню.</p><span>АЛЛЕИ И ФУД-КОРТЫ</span></div></article></div></div>
     <div class="day-panel" id="saturday" data-panel="saturday"><div class="day-intro"><p class="eyebrow">СУББОТА / 24 ОКТЯБРЯ</p><h3>Суббота</h3><p>Мастерские, сцена и DJ-сет.</p></div><div class="timeline"><article><time>11:00–14:00</time><div><h4>Детские мастер-классы</h4><p>Осенние поделки и творческие мастерские.</p><span>ПЛОЩАДЬ ПЕРЕД СЦЕНОЙ</span></div></article><article><time>14:00–18:00</time><div><h4>Ведущий и интерактивы</h4><p>Викторина и конкурсы каждый час.</p><span>СЦЕНА</span></div></article><article><time>14:00–19:00</time><div><h4>Игровые станции</h4><p>Метание брецеля и гонки с кружками.</p><span>ТЕРРИТОРИЯ ПАРКА</span></div></article><article class="highlight"><time>18:00–21:00</time><div><h4>DJ-сет</h4><p>Фестивальная музыка и знакомые хиты.</p><span>СЦЕНА / МУЗЫКА</span></div></article></div></div>
-    <div class="day-panel" id="sunday" data-panel="sunday"><div class="day-intro"><p class="eyebrow">ВОСКРЕСЕНЬЕ / 25 ОКТЯБРЯ</p><h3>Воскресенье</h3><p>Мастерские, сцена и игры.</p></div><div class="timeline"><article><time>11:00–14:00</time><div><h4>Детские мастер-классы</h4><p>Осенние поделки и творческие мастерские.</p><span>ПЛОЩАДЬ ПЕРЕД СЦЕНОЙ</span></div></article><article><time>14:00–18:00</time><div><h4>Ведущий на сцене</h4><p>Интерактивы, викторина и конкурсы.</p><span>СЦЕНА</span></div></article><article><time>14:00–19:00</time><div><h4>Игровые станции</h4><p>Метание брецеля и гонки с кружками.</p><span>ТЕРРИТОРИЯ ПАРКА</span></div></article></div></div>
+    <div class="day-panel" id="sunday" data-panel="sunday"><div class="day-intro"><p class="eyebrow">ВОСКРЕСЕНЬЕ / 25 ОКТЯБРЯ</p><h3>Воскресенье</h3><p>Мастерские, игры и футбол.</p></div><div class="timeline"><article><time>11:00–14:00</time><div><h4>Детские мастер-классы</h4><p>Осенние поделки и творческие мастерские.</p><span>ПЛОЩАДЬ ПЕРЕД СЦЕНОЙ</span></div></article><article><time>14:00–18:00</time><div><h4>Ведущий на сцене</h4><p>Интерактивы, викторина и конкурсы.</p><span>СЦЕНА</span></div></article><article><time>14:00–19:00</time><div><h4>Игровые станции</h4><p>Метание брецеля и гонки с кружками.</p><span>ТЕРРИТОРИЯ ПАРКА</span></div></article><article><time>16:00–18:00</time><div><h4>Трансляция матча ЦСКА — «Спартак»</h4><p>Смотрим игру вместе в спорт-баре.</p><span>СПОРТ-БАР</span></div></article></div></div>
   </div>
 </section>
 <section class="faq wrap section" id="faq" aria-labelledby="faq-title"><div><p class="eyebrow">ВОПРОСЫ И ОТВЕТЫ</p><h2 id="faq-title">Перед поездкой</h2></div><div class="faq-list">
