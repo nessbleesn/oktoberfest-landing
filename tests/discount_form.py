@@ -36,16 +36,20 @@ def scenario(browser, marketing, duplicate=False, pending=False, width=390, utm=
     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1")
     personal = page.locator("#discount-personal")
     advertising = page.locator("#discount-marketing")
-    assert personal.is_checked() and personal.get_attribute("aria-disabled") == "true"
-    personal.click(force=True)
+    assert not personal.is_checked() and personal.get_attribute("aria-disabled") is None
+    assert not advertising.is_checked()
+    page.locator("#discount-email").fill("visitor@example.test")
+    page.locator('#discount-form [type="submit"]').click()
+    assert not requests, "Form must not submit without personal-data consent"
+    personal.check()
     assert personal.is_checked()
     personal.focus()
     personal.press("Space")
+    assert not personal.is_checked(), "Consent must be revocable before submission"
+    personal.press("Space")
     assert personal.is_checked()
-    assert advertising.is_checked()
-    if not marketing:
-        advertising.uncheck()
-    page.locator("#discount-email").fill("visitor@example.test")
+    if marketing:
+        advertising.check()
     page.locator('#discount-form [type="submit"]').click()
     expected = DUPLICATE if duplicate else PENDING if pending else SUCCESS
     page.locator("#discount-status").get_by_text(expected, exact=True).wait_for()

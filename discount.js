@@ -6,7 +6,6 @@
   const status=document.getElementById('discount-status');
   const landingParams=new URLSearchParams(window.location.search);
   const utmFields=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-  form.elements['personal-consent'].addEventListener('click',event=>event.preventDefault());
   const openers=[...document.querySelectorAll('[data-discount-open]')];
   let opener=null;
   let pending=false;
